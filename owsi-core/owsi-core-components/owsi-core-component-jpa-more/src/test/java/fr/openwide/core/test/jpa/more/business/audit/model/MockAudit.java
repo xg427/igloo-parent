@@ -19,6 +19,9 @@ public class MockAudit extends AbstractAudit {
 
 	@ManyToOne
 	private MockAuditFeature feature;
+	
+	protected MockAudit() {
+	}
 
 	public MockAudit(String service, String method, GenericEntity<Integer, ?> context, GenericEntity<Integer, ?> subject,
 			AbstractAuditFeature feature, AbstractAuditAction action, String message, GenericEntity<Integer, ?> object,
