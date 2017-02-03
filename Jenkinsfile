@@ -1,6 +1,9 @@
 @Library('grp.helpers') _
 
 simpleProject {
+	// processor is broken if code not cleaned before build
+	config.mavenAlwaysClean = true
+
 	def isTestEnabled = env.JOB_NAME.contains('-tests')
 	config.triggerSetPollSpecEnabled = isTestEnabled
 	// stages only on specific project
