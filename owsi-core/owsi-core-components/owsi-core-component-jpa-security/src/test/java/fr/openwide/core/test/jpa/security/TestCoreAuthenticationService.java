@@ -34,21 +34,25 @@ public class TestCoreAuthenticationService extends AbstractJpaSecurityTestCase {
 		authenticationManager.setEraseCredentialsAfterAuthentication(false);
 		
 		authenticateAs(user);
-		
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		
-		assertTrue(authenticationService.isLoggedIn());
-		assertNotNull(authentication);
-		assertEquals(user.getUserName(), authentication.getName());
-		assertEquals(DEFAULT_PASSWORD, authentication.getCredentials());
-		
-		assertTrue(authentication.isAuthenticated());
-		
-		authenticationManager.setEraseCredentialsAfterAuthentication(true);
-		
-		authenticationService.signOut();
-		assertFalse(authenticationService.isLoggedIn());
-		assertNull(SecurityContextHolder.getContext().getAuthentication());
+		try {
+			
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			
+			assertTrue(authenticationService.isLoggedIn());
+			assertNotNull(authentication);
+			assertEquals(user.getUserName(), authentication.getName());
+			assertEquals(DEFAULT_PASSWORD, authentication.getCredentials());
+			
+			assertTrue(authentication.isAuthenticated());
+			
+			authenticationManager.setEraseCredentialsAfterAuthentication(true);
+			
+			authenticationService.signOut();
+			assertFalse(authenticationService.isLoggedIn());
+			assertNull(SecurityContextHolder.getContext().getAuthentication());
+		} finally {
+			authenticationService.signOut();
+		}
 	}
 
 	@Test
@@ -58,33 +62,37 @@ public class TestCoreAuthenticationService extends AbstractJpaSecurityTestCase {
 		mockPersonService.update(user);
 		
 		authenticateAs(user);
-		
-		@SuppressWarnings("unchecked")
-		Collection<GrantedAuthority> grantedAuthorities = (Collection<GrantedAuthority>) authenticationService.getAuthorities();
-		
-		assertTrue(grantedAuthorities.size() > 0);
-		
-		boolean hasRoleSystem = false;
-		boolean hasRoleAdmin = false;
-		boolean hasRoleAuthenticated = false;
-		boolean hasRoleAnonymous = false;
-		
-		for (GrantedAuthority grantedAuthority : grantedAuthorities) {
-			if(CoreAuthorityConstants.ROLE_SYSTEM.equals(grantedAuthority.getAuthority())) {
-				hasRoleSystem = true;
-			} else if(CoreAuthorityConstants.ROLE_ADMIN.equals(grantedAuthority.getAuthority())) {
-				hasRoleAdmin = true;
-			} else if(CoreAuthorityConstants.ROLE_AUTHENTICATED.equals(grantedAuthority.getAuthority())) {
-				hasRoleAuthenticated = true;
-			} else if(CoreAuthorityConstants.ROLE_ANONYMOUS.equals(grantedAuthority.getAuthority())) {
-				hasRoleAnonymous = true;
+		try {
+			
+			@SuppressWarnings("unchecked")
+			Collection<GrantedAuthority> grantedAuthorities = (Collection<GrantedAuthority>) authenticationService.getAuthorities();
+			
+			assertTrue(grantedAuthorities.size() > 0);
+			
+			boolean hasRoleSystem = false;
+			boolean hasRoleAdmin = false;
+			boolean hasRoleAuthenticated = false;
+			boolean hasRoleAnonymous = false;
+			
+			for (GrantedAuthority grantedAuthority : grantedAuthorities) {
+				if(CoreAuthorityConstants.ROLE_SYSTEM.equals(grantedAuthority.getAuthority())) {
+					hasRoleSystem = true;
+				} else if(CoreAuthorityConstants.ROLE_ADMIN.equals(grantedAuthority.getAuthority())) {
+					hasRoleAdmin = true;
+				} else if(CoreAuthorityConstants.ROLE_AUTHENTICATED.equals(grantedAuthority.getAuthority())) {
+					hasRoleAuthenticated = true;
+				} else if(CoreAuthorityConstants.ROLE_ANONYMOUS.equals(grantedAuthority.getAuthority())) {
+					hasRoleAnonymous = true;
+				}
 			}
+			
+			assertFalse(hasRoleSystem);
+			assertFalse(hasRoleAdmin);
+			assertTrue(hasRoleAuthenticated);
+			assertTrue(hasRoleAnonymous);
+		} finally {
+			authenticationService.signOut();
 		}
-		
-		assertFalse(hasRoleSystem);
-		assertFalse(hasRoleAdmin);
-		assertTrue(hasRoleAuthenticated);
-		assertTrue(hasRoleAnonymous);
 	}
 
 	@Test
@@ -93,12 +101,16 @@ public class TestCoreAuthenticationService extends AbstractJpaSecurityTestCase {
 		user.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
 		mockPersonService.update(user);
 		authenticateAs(user);
-		
 		try {
-			mockPersonService.protectedMethodRoleAdmin();
-			Assert.fail("L'accès devrait être interdit.");
-		} catch (AccessDeniedException e) {}
-		
-		mockPersonService.protectedMethodRoleAuthenticated();
+			
+			try {
+				mockPersonService.protectedMethodRoleAdmin();
+				Assert.fail("L'accès devrait être interdit.");
+			} catch (AccessDeniedException e) {}
+			
+			mockPersonService.protectedMethodRoleAuthenticated();
+		} finally {
+			authenticationService.signOut();
+		}
 	}
 }
