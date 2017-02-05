@@ -22,18 +22,22 @@ public class TestCoreSecurityService extends AbstractJpaSecurityTestCase {
 		mockPersonService.update(admin);
 		
 		authenticateAs(admin);
-		assertFalse(securityService.hasSystemRole(admin));
-		assertTrue(securityService.hasAdminRole(admin));
-		assertTrue(securityService.hasAuthenticatedRole(admin));
-		
-		MockPerson authenticated = createMockPerson("authenticated", "firstName", "lastName");
-		authenticated.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
-		mockPersonService.update(authenticated);
-		
-		authenticateAs(authenticated);
-		assertFalse(securityService.hasSystemRole(authenticated));
-		assertFalse(securityService.hasAdminRole(authenticated));
-		assertTrue(securityService.hasAuthenticatedRole(authenticated));
+		try {
+			assertFalse(securityService.hasSystemRole(admin));
+			assertTrue(securityService.hasAdminRole(admin));
+			assertTrue(securityService.hasAuthenticatedRole(admin));
+			
+			MockPerson authenticated = createMockPerson("authenticated", "firstName", "lastName");
+			authenticated.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
+			mockPersonService.update(authenticated);
+			
+			authenticateAs(authenticated);
+			assertFalse(securityService.hasSystemRole(authenticated));
+			assertFalse(securityService.hasAdminRole(authenticated));
+			assertTrue(securityService.hasAuthenticatedRole(authenticated));
+		} finally {
+			authenticationService.signOut();
+		}
 	}
 	
 	@Test
