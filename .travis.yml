@@ -14,6 +14,6 @@ env:
     - MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=256m"
 install:
   - mvn -v
-before_script: 
+before_script:
   - psql -U postgres -f travis/postgresql.sql
 script: mvn -U -Ptravis clean package
