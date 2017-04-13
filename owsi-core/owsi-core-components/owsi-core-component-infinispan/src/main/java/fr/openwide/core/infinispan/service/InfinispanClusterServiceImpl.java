@@ -15,9 +15,11 @@ import org.infinispan.remoting.transport.Address;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
+import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.RateLimiter;
 
 import fr.openwide.core.infinispan.listener.CacheEntryEventListener;
@@ -36,7 +38,6 @@ import fr.openwide.core.infinispan.model.impl.LeaveEvent;
 import fr.openwide.core.infinispan.model.impl.LockAttribution;
 import fr.openwide.core.infinispan.model.impl.Node;
 import fr.openwide.core.infinispan.model.impl.RoleAttribution;
-import infinispan.com.google.common.collect.Lists;
 
 public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 
@@ -134,6 +135,19 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	@Override
 	public List<Address> getMembers() {
 		return cacheManager.getMembers();
+	}
+
+	@Override
+	public List<INode> getNodes() {
+		return ImmutableList.copyOf(Lists.transform(
+				getMembers(),
+				new Function<Address, INode>() {
+					@Override
+					public INode apply(Address input) {
+						return getNodesCache().get(input);
+					}
+				}
+		));
 	}
 
 	@Override

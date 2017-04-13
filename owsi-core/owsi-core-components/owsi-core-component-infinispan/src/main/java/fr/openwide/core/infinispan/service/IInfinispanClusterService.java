@@ -8,6 +8,7 @@ import org.infinispan.remoting.transport.Address;
 
 import fr.openwide.core.infinispan.model.ILock;
 import fr.openwide.core.infinispan.model.ILockRequest;
+import fr.openwide.core.infinispan.model.INode;
 
 public interface IInfinispanClusterService {
 
@@ -58,5 +59,7 @@ public interface IInfinispanClusterService {
 	void onViewChangedEvent(ViewChangedEvent viewChangedEvent);
 
 	List<Address> getMembers();
+
+	List<INode> getNodes();
 
 }
