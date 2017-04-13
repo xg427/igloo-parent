@@ -52,6 +52,7 @@ import fr.openwide.core.basicapp.web.application.security.password.page.Security
 import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordExpirationPage;
 import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordRecoveryPage;
 import fr.openwide.core.basicapp.web.application.security.password.page.SecurityPasswordResetPage;
+import fr.openwide.core.infinispan.service.IInfinispanClusterService;
 import fr.openwide.core.jpa.more.business.history.model.embeddable.HistoryValue;
 import fr.openwide.core.jpa.security.business.authority.model.Authority;
 import fr.openwide.core.spring.property.service.IPropertyService;
@@ -78,6 +79,9 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 	
 	@Autowired
 	private IPropertyService propertyService;
+
+	@Autowired
+	public IInfinispanClusterService infinispanClusterService;
 	
 	public static BasicApplicationApplication get() {
 		final Application application = Application.get();
