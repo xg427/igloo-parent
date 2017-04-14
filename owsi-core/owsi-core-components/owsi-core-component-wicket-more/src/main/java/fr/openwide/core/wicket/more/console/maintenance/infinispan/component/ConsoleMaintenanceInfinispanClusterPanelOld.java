@@ -9,6 +9,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.openwide.core.infinispan.model.INode;
+import fr.openwide.core.infinispan.model.INodeBinding;
 import fr.openwide.core.infinispan.service.IInfinispanClusterService;
 import fr.openwide.core.wicket.markup.html.basic.CoreLabel;
 import fr.openwide.core.wicket.more.condition.Condition;
@@ -23,23 +24,23 @@ import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBindings;
 import fr.openwide.core.wicket.more.util.model.Detachables;
 import fr.openwide.core.wicket.more.util.model.Models;
 
-public class ConsoleMaintenanceInfinispanNodesPanel extends Panel {
+public class ConsoleMaintenanceInfinispanClusterPanelOld extends Panel {
 
-	private static final long serialVersionUID = 5155655164189659661L;
-	
+	private static final long serialVersionUID = -18845870460913498L;
+
 	@SpringBean
 	private IInfinispanClusterService infinispanClusterService;
-	
+
 	private final IModel<List<INode>> nodesModel;
 
-	public ConsoleMaintenanceInfinispanNodesPanel(String id) {
+	public ConsoleMaintenanceInfinispanClusterPanelOld(String id) {
 		super(id);
 		
 		nodesModel = new LoadableDetachableModel<List<INode>>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected List<INode> load() {
-				return infinispanClusterService.getAllNodes();
+				return infinispanClusterService.getNodes();
 			}
 		};
 		

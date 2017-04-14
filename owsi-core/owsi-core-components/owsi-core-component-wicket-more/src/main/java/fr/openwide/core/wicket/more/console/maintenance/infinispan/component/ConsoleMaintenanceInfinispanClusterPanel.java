@@ -3,20 +3,25 @@ package fr.openwide.core.wicket.more.console.maintenance.infinispan.component;
 import java.util.List;
 
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import com.google.common.base.Functions;
 
 import fr.openwide.core.infinispan.model.INode;
 import fr.openwide.core.infinispan.service.IInfinispanClusterService;
-import fr.openwide.core.wicket.more.markup.repeater.collection.CollectionView;
+import fr.openwide.core.wicket.more.condition.Condition;
+import fr.openwide.core.wicket.more.console.maintenance.infinispan.renderer.INodeRenderer;
+import fr.openwide.core.wicket.more.markup.repeater.table.builder.DataTableBuilder;
+import fr.openwide.core.wicket.more.model.ReadOnlyCollectionModel;
+import fr.openwide.core.wicket.more.util.DatePattern;
+import fr.openwide.core.wicket.more.util.binding.CoreWicketMoreBindings;
 import fr.openwide.core.wicket.more.util.model.Detachables;
 import fr.openwide.core.wicket.more.util.model.Models;
 
 public class ConsoleMaintenanceInfinispanClusterPanel extends Panel {
-
-	private static final long serialVersionUID = -18845870460913498L;
 
 	@SpringBean
 	private IInfinispanClusterService infinispanClusterService;
@@ -35,17 +40,28 @@ public class ConsoleMaintenanceInfinispanClusterPanel extends Panel {
 		};
 		
 		add(
-				new CollectionView<INode>("nodes", nodesModel, Models.<INode>serializableModelFactory()) {
-					private static final long serialVersionUID = 1L;
-					@Override
-					protected void populateItem(Item<INode> item) {
-						IModel<INode> nodeModel = item.getModel();
-						
-//						add(
-//								
-//						);
-					}
-				}
+				DataTableBuilder.start(
+						ReadOnlyCollectionModel.of(nodesModel, Models.serializableModelFactory())
+				)
+						.addLabelColumn(new ResourceModel("business.infinispan.node.address"))
+						.addLabelColumn(
+								new ResourceModel("business.infinispan.node.name"),
+								CoreWicketMoreBindings.iNode().name()
+						)
+						.addLabelColumn(
+								new ResourceModel("business.infinispan.node.creationDate"),
+								CoreWicketMoreBindings.iNode().creationDate(),
+								DatePattern.REALLY_SHORT_DATETIME
+						)
+						.addBootstrapBadgeColumn(
+								new ResourceModel("business.infinispan.node.anonymous"),
+								Functions.identity(),
+								INodeRenderer.anonymous()
+						)
+								.bootstrapPanel()
+										.title("console.maintenance.infinispan.cluster")
+										.responsive(Condition.alwaysTrue())
+										.build("nodes")
 		);
 	}
 

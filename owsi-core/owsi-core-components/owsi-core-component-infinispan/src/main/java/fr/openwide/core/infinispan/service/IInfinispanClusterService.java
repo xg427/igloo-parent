@@ -61,5 +61,7 @@ public interface IInfinispanClusterService {
 	List<Address> getMembers();
 
 	List<INode> getNodes();
+	
+	List<INode> getAllNodes();
 
 }

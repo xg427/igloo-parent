@@ -154,6 +154,11 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	}
 
 	@Override
+	public List<INode> getAllNodes() {
+		return ImmutableList.copyOf(getNodesCache().values());
+	}
+
+	@Override
 	public synchronized void stop() {
 		String address = String.format("[%s]", getAddress());
 		if (initialized) {
