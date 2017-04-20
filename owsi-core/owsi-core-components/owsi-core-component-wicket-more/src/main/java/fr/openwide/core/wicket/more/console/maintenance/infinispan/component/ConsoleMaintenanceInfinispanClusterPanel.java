@@ -23,6 +23,8 @@ import fr.openwide.core.wicket.more.util.model.Models;
 
 public class ConsoleMaintenanceInfinispanClusterPanel extends Panel {
 
+	private static final long serialVersionUID = -3170379589959735719L;
+
 	@SpringBean
 	private IInfinispanClusterService infinispanClusterService;
 
@@ -43,7 +45,10 @@ public class ConsoleMaintenanceInfinispanClusterPanel extends Panel {
 				DataTableBuilder.start(
 						ReadOnlyCollectionModel.of(nodesModel, Models.serializableModelFactory())
 				)
-						.addLabelColumn(new ResourceModel("business.infinispan.node.address"))
+						.addLabelColumn(
+								new ResourceModel("business.infinispan.node.address"),
+								CoreWicketMoreBindings.iNode().address()
+						)
 						.addLabelColumn(
 								new ResourceModel("business.infinispan.node.name"),
 								CoreWicketMoreBindings.iNode().name()
@@ -61,7 +66,7 @@ public class ConsoleMaintenanceInfinispanClusterPanel extends Panel {
 								.bootstrapPanel()
 										.title("console.maintenance.infinispan.cluster")
 										.responsive(Condition.alwaysTrue())
-										.build("nodes")
+										.build("cluster")
 		);
 	}
 

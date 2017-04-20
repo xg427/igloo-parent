@@ -15,7 +15,7 @@ public interface INode extends Serializable {
 
 	Date getCreationDate();
 
-	Date getDisconnectionDate();
+	Date getLeaveDate();
 
 	boolean isAnonymous();
 

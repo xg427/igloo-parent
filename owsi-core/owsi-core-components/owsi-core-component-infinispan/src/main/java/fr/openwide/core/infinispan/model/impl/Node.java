@@ -17,15 +17,16 @@ public class Node implements INode {
 
 	private final Date creationDate;
 
-	private Date disconnectionDate;
+	private final Date leaveDate;
 
 	private final boolean anonymous;
 
-	private Node(Address address, String name, Date creationDate, boolean anonymous) {
+	private Node(Address address, String name, Date creationDate, Date leaveDate, boolean anonymous) {
 		super();
 		this.name = name;
 		this.address = address;
 		this.creationDate = CloneUtils.clone(creationDate);
+		this.leaveDate = CloneUtils.clone(leaveDate);
 		this.anonymous = anonymous;
 	}
 
@@ -45,12 +46,8 @@ public class Node implements INode {
 	}
 
 	@Override
-	public Date getDisconnectionDate() {
-		return disconnectionDate;
-	}
-
-	public void setDisconnectionDate(Date disconnectionDate) {
-		this.disconnectionDate = CloneUtils.clone(disconnectionDate);
+	public Date getLeaveDate() {
+		return leaveDate;
 	}
 
 	@Override
@@ -64,11 +61,21 @@ public class Node implements INode {
 	}
 
 	public static final Node from(Address address, String name) {
-		return new Node(address, name, new Date(), false);
+		return new Node(address, name, new Date(), null, false);
 	}
 
 	public static final Node from(Address address) {
-		return new Node(address, "anonymous", new Date(), true);
+		return new Node(address, "anonymous", new Date(), null, true);
+	}
+
+	public static final Node from(INode node, Date leaveDate) {
+		return new Node(
+				node.getAddress(),
+				node.getName(),
+				node.getCreationDate(),
+				leaveDate,
+				node.isAnonymous()
+		);
 	}
 
 }

@@ -2,7 +2,7 @@ package fr.openwide.core.wicket.more.console.maintenance.infinispan.page;
 
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import fr.openwide.core.wicket.more.console.maintenance.infinispan.component.ConsoleMaintenanceInfinispanClusterPanelOld;
+import fr.openwide.core.wicket.more.console.maintenance.infinispan.component.ConsoleMaintenanceInfinispanClusterPanel;
 import fr.openwide.core.wicket.more.console.maintenance.infinispan.component.ConsoleMaintenanceInfinispanLocksPanel;
 import fr.openwide.core.wicket.more.console.maintenance.infinispan.component.ConsoleMaintenanceInfinispanNodesPanel;
 import fr.openwide.core.wicket.more.console.maintenance.infinispan.component.ConsoleMaintenanceInfinispanRolesPanel;
@@ -17,7 +17,7 @@ public class ConsoleMaintenanceInfinispanPage extends ConsoleMaintenanceTemplate
 		super(parameters);
 		
 		add(
-				new ConsoleMaintenanceInfinispanClusterPanelOld("cluster"),
+				new ConsoleMaintenanceInfinispanClusterPanel("cluster"),
 				new ConsoleMaintenanceInfinispanRolesPanel("roles"),
 				new ConsoleMaintenanceInfinispanLocksPanel("locks"),
 				new ConsoleMaintenanceInfinispanNodesPanel("nodes")

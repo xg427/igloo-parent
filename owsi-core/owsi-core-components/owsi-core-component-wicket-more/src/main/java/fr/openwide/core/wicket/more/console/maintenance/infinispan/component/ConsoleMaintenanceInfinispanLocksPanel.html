@@ -3,14 +3,21 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <body>
 	<wicket:panel>
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<wicket:message key="console.maintenance.infinispan.locks" />
+		<div wicket:id="locks" class="panel panel-default"/>
+		<wicket:fragment wicket:id="lockKey">
+			<div>
+				<span wicket:id="key" />
 			</div>
-			<div class="panel-body">
-				TODO
-			</div>
-		</div>
+		</wicket:fragment>
 	</wicket:panel>
+	
+	<wicket:fragment wicket:id="lockAttribution">
+			<div>
+				<span wicket:id="address" />
+			</div>
+			<div>
+				<span wicket:id="attributionDate" />
+			</div>
+	</wicket:fragment>
 </body>
 </html>
