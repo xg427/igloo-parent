@@ -3,13 +3,10 @@ package fr.openwide.core.basicapp.core.config.spring;
 import javax.sql.DataSource;
 
 import org.flywaydb.core.Flyway;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
 import fr.openwide.core.basicapp.core.business.BasicApplicationCoreCommonBusinessPackage;
 import fr.openwide.core.basicapp.core.config.hibernate.HibernateConfigPackage;
@@ -34,16 +31,10 @@ public class BasicApplicationCoreCommonJpaConfig extends AbstractConfiguredJpaSe
 		flyway.setSchemas(flywayConfiguration.getSchemas()); 
 		flyway.setTable(flywayConfiguration.getTable());
 		flyway.setLocations(flywayConfiguration.getLocations());
-		flyway.migrate();
+		flyway.setBaselineOnMigrate(true);
 		return flyway;
 	}
-	
-	@Override
-	@DependsOn(value = "flyway")
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-		return super.entityManagerFactory();
-	}
-	
+
 	/**
 	 * Déclaration des packages de scan pour l'application.
 	 */
