@@ -1,0 +1,2 @@
+#Path to the class used for recovering the metadata object required by the script which log the diff between the database and the model
+fr.openwide.core.basicapp.init.integrator.spi.MetadataRegistryIntegrator

@@ -1,6 +1,7 @@
 package fr.openwide.core.basicapp.core.business.user.model;
 
 import javax.persistence.Cacheable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import org.bindgen.Bindable;
