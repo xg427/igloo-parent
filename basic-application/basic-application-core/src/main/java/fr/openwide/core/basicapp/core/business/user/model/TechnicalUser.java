@@ -1,6 +1,7 @@
 package fr.openwide.core.basicapp.core.business.user.model;
 
 import javax.persistence.Cacheable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import org.bindgen.Bindable;
@@ -13,5 +14,5 @@ import org.hibernate.search.annotations.Indexed;
 public class TechnicalUser extends User {
 
 	private static final long serialVersionUID = 1796077904296031306L;
-
+	
 }
