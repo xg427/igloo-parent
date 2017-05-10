@@ -46,9 +46,17 @@ public final class BasicApplicationSqlUpdateScriptMain {
 		ConfigurableApplicationContext context = null;
 		try {
 			context = new AnnotationConfigApplicationContext(BasicApplicationInitConfig.class);
-			String fileName = args[1];
-			String action = args[0];
+			String fileName;
+			String action;
 			
+			if(args.length == 2) {
+				fileName = args[1];
+				action = args[0];
+			} else {
+				fileName = "/tmp/script.sql";
+				action = "create";
+			}
+				
 			EntityManagerFactory entityManagerFactory = context.getBean(EntityManagerFactory.class);
 			EntityManager entityManager = entityManagerFactory.createEntityManager();
 			
