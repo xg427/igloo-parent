@@ -46,10 +46,8 @@ public final class BasicApplicationSqlUpdateScriptMain {
 		ConfigurableApplicationContext context = null;
 		try {
 			context = new AnnotationConfigApplicationContext(BasicApplicationInitConfig.class);
-			//String fileName = args[1];
-			//String action = args[0];
-			String fileName = "/home/palma";
-			String action = "update";
+			String fileName = args[1];
+			String action = args[0];
 			
 			EntityManagerFactory entityManagerFactory = context.getBean(EntityManagerFactory.class);
 			EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -93,9 +91,10 @@ public final class BasicApplicationSqlUpdateScriptMain {
 				};
 				serviceRegistry.getService(SchemaManagementTool.class).getSchemaCreator(Maps.newHashMap())
 						.doCreation(metadata, executionOptions, sourceDescriptor, targetDescriptor);
-			} else
+			} else if (action.equals("update")) {
 				serviceRegistry.getService(SchemaManagementTool.class).getSchemaMigrator(Maps.newHashMap())
 						.doMigration(metadata, executionOptions, targetDescriptor);
+			}
 			
 			LOGGER.info("Initialization complete");
 		} catch (Throwable e) { // NOSONAR We just want to log the Exception/Error, no error handling here.
