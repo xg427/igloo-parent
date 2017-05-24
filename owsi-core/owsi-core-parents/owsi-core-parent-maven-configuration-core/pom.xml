@@ -1195,6 +1195,12 @@
 					<groupId>org.hibernate</groupId>
 					<artifactId>hibernate-search-elasticsearch</artifactId>
 					<version>${owsi-core.hibernate-search.version}</version>
+					<exclusions>
+						<exclusion>
+							<groupId>commons-logging</groupId>
+							<artifactId>commons-logging</artifactId>
+						</exclusion>
+					</exclusions>
 				</dependency>
 		
 			<!-- Test dependencies -->
