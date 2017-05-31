@@ -9,10 +9,13 @@ import javax.sql.DataSource;
 import org.apache.lucene.search.BooleanQuery;
 import org.springframework.aop.Advisor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.ComponentScan.Filter;
+import org.springframework.core.io.Resource;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -39,6 +42,9 @@ import fr.openwide.core.spring.property.service.IPropertyService;
 	excludeFilters = @Filter(Configuration.class)
 )
 public abstract class AbstractJpaConfig {
+
+	@Autowired
+	protected DefaultJpaConfig defaultJpaConfig;
 	
 	@Autowired
 	@Lazy
@@ -47,6 +53,24 @@ public abstract class AbstractJpaConfig {
 	@PostConstruct
 	public void init() {
 		BooleanQuery.setMaxClauseCount(propertyService.get(LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT));
+	}
+
+	@Bean(name = "hibernateDefaultExtraProperties")
+	public PropertiesFactoryBean hibernateDefaultExtraProperties(@Value("${hibernate.defaultExtraPropertiesUrl}") Resource defaultExtraPropertiesUrl) {
+		PropertiesFactoryBean f = new PropertiesFactoryBean();
+		f.setIgnoreResourceNotFound(false);
+		f.setFileEncoding("UTF-8");
+		f.setLocations(defaultExtraPropertiesUrl);
+		return f;
+	}
+
+	@Bean(name = "hibernateExtraProperties")
+	public PropertiesFactoryBean hibernateExtraProperties(@Value("${hibernate.extraPropertiesUrl}") Resource extraPropertiesUrl) {
+		PropertiesFactoryBean f = new PropertiesFactoryBean();
+		f.setIgnoreResourceNotFound(true);
+		f.setFileEncoding("UTF-8");
+		f.setLocations(extraPropertiesUrl);
+		return f;
 	}
 
 	@Bean

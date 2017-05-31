@@ -3,8 +3,11 @@ package fr.openwide.core.jpa.config.spring;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.io.Resource;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
 /**
@@ -13,9 +16,6 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
  */
 @Import(DefaultJpaConfig.class)
 public abstract class AbstractConfiguredJpaConfig extends AbstractJpaConfig {
-
-	@Autowired
-	private DefaultJpaConfig defaultJpaConfig;
 
 	@Override
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
