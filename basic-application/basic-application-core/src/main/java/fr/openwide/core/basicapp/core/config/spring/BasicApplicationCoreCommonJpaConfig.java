@@ -1,17 +1,9 @@
 package fr.openwide.core.basicapp.core.config.spring;
 
-<<<<<<< 59eeb5a4c7aafc17e1e052a3295ec5412925cc9d
 import javax.sql.DataSource;
 
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Autowired;
-||||||| merged common ancestors
-=======
-import javax.sql.DataSource;
-
-import org.flywaydb.core.Flyway;
-import org.springframework.beans.factory.annotation.Autowired;
->>>>>>> add flywaydb dependencies and properties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -20,7 +12,6 @@ import fr.openwide.core.basicapp.core.business.BasicApplicationCoreCommonBusines
 import fr.openwide.core.basicapp.core.config.hibernate.HibernateConfigPackage;
 import fr.openwide.core.basicapp.core.config.util.FlywayConfiguration;
 import fr.openwide.core.jpa.config.spring.provider.JpaPackageScanProvider;
-import fr.openwide.core.jpa.more.config.util.FlywayConfiguration;
 import fr.openwide.core.jpa.security.config.spring.AbstractConfiguredJpaSecurityJpaConfig;
 
 @Configuration
