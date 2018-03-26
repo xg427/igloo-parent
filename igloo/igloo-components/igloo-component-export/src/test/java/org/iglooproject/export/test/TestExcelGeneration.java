@@ -4,20 +4,19 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.Test;
-
-import com.google.common.collect.ImmutableList;
-
+import org.iglooproject.commons.util.date.Dates;
 import org.iglooproject.export.excel.ColumnInformation;
 import org.iglooproject.export.test.export.PersonHSSFExport;
 import org.iglooproject.export.test.export.PersonXSSFExport;
 import org.iglooproject.export.test.person.Person;
+import org.junit.Test;
+
+import com.google.common.collect.ImmutableList;
 
 public class TestExcelGeneration {
 
@@ -37,11 +36,11 @@ public class TestExcelGeneration {
 				.build();
 
 		List<Person> persons = new LinkedList<Person>();
-		persons.add(new Person("username1", "firstname1", "lastname1", new Date(), 24, 1.80, .88));
-		persons.add(new Person("username2", "firstname2", "lastname2", new Date(), 25, 1.70, .20));
-		persons.add(new Person("username3", "firstname3", "lastname3", new Date(), 32, 1.75, .50));
-		persons.add(new Person("username4", "firstname4", "lastname4", new Date(), 53, 1.72, .21));
-		persons.add(new Person("username5", "firstname5", "lastname5", new Date(), 19, 1.88, .23));
+		persons.add(new Person("username1", "firstname1", "lastname1", Dates.nowLocalDateTime(), 24, 1.80, .88));
+		persons.add(new Person("username2", "firstname2", "lastname2", Dates.nowLocalDateTime(), 25, 1.70, .20));
+		persons.add(new Person("username3", "firstname3", "lastname3", Dates.nowLocalDateTime(), 32, 1.75, .50));
+		persons.add(new Person("username4", "firstname4", "lastname4", Dates.nowLocalDateTime(), 53, 1.72, .21));
+		persons.add(new Person("username5", "firstname5", "lastname5", Dates.nowLocalDateTime(), 19, 1.88, .23));
 
 		PersonHSSFExport export = new PersonHSSFExport();
 		HSSFWorkbook workbook = export.generate(persons, columns);
@@ -83,11 +82,11 @@ public class TestExcelGeneration {
 		columns.add("percentage");
 
 		List<Person> persons = new LinkedList<Person>();
-		persons.add(new Person("username1", "firstname1", "lastname1", new Date(), 24, 1.80, .88));
-		persons.add(new Person("username2", "firstname2", "lastname2", new Date(), 25, 1.70, .20));
-		persons.add(new Person("username3", "firstname3", "lastname3", new Date(), 32, 1.75, .50));
-		persons.add(new Person("username4", "firstname4", "lastname4", new Date(), 53, 1.72, .21));
-		persons.add(new Person("username5", "firstname5", "lastname5", new Date(), 19, 1.88, .23));
+		persons.add(new Person("username1", "firstname1", "lastname1", Dates.nowLocalDateTime(), 24, 1.80, .88));
+		persons.add(new Person("username2", "firstname2", "lastname2", Dates.nowLocalDateTime(), 25, 1.70, .20));
+		persons.add(new Person("username3", "firstname3", "lastname3", Dates.nowLocalDateTime(), 32, 1.75, .50));
+		persons.add(new Person("username4", "firstname4", "lastname4", Dates.nowLocalDateTime(), 53, 1.72, .21));
+		persons.add(new Person("username5", "firstname5", "lastname5", Dates.nowLocalDateTime(), 19, 1.88, .23));
 
 		PersonXSSFExport export = new PersonXSSFExport();
 		@SuppressWarnings("unused")

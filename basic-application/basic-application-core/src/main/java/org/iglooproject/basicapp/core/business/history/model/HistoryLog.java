@@ -1,5 +1,6 @@
 package org.iglooproject.basicapp.core.business.history.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Cacheable;
@@ -8,8 +9,8 @@ import javax.persistence.Entity;
 import org.bindgen.Bindable;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.search.annotations.Indexed;
-
 import org.iglooproject.basicapp.core.business.history.model.atomic.HistoryEventType;
+import org.iglooproject.commons.util.date.Dates;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.jpa.more.business.history.hibernate.FieldPathType;
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryLog;
@@ -28,9 +29,16 @@ public class HistoryLog extends AbstractHistoryLog<HistoryLog, HistoryEventType,
 		// nothing to do
 	}
 	
-	public HistoryLog(Date date, HistoryEventType eventType, HistoryValue mainObject) {
+	public HistoryLog(LocalDateTime date, HistoryEventType eventType, HistoryValue mainObject) {
 		super(date, eventType, mainObject);
 	}
 
+	/**
+	 * @deprecated Use new API date from java.time.
+	 */
+	@Deprecated
+	public HistoryLog(Date date, HistoryEventType eventType, HistoryValue mainObject) {
+		this(Dates.toLocalDateTime(date), eventType, mainObject);
+	}
 
 }

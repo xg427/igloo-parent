@@ -17,6 +17,8 @@
 
 package org.iglooproject.commons.util;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -43,6 +45,22 @@ public final class CloneUtils {
 			return null;
 		} else {
 			return (Date) date.clone();
+		}
+	}
+	
+	public static LocalDate clone(LocalDate date) {
+		if (date == null) {
+			return null;
+		} else {
+			return LocalDate.from(date);
+		}
+	}
+	
+	public static LocalDateTime clone(LocalDateTime date) {
+		if (date == null) {
+			return null;
+		} else {
+			return LocalDateTime.from(date);
 		}
 	}
 	

@@ -1,13 +1,12 @@
 package org.iglooproject.test.jpa.more.business.history.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 
 import org.bindgen.Bindable;
 import org.hibernate.search.annotations.Indexed;
-
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryLog;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
 import org.iglooproject.test.jpa.more.business.history.model.atomic.TestHistoryEventType;
@@ -24,7 +23,7 @@ public class TestHistoryLog extends AbstractHistoryLog<TestHistoryLog, TestHisto
 		// nothing to do
 	}
 	
-	public TestHistoryLog(Date date, TestHistoryEventType eventType, HistoryValue mainObject) {
+	public TestHistoryLog(LocalDateTime date, TestHistoryEventType eventType, HistoryValue mainObject) {
 		super(date, eventType, mainObject);
 	}
 

@@ -31,6 +31,12 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-commons</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 		</dependency>

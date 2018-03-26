@@ -1,5 +1,9 @@
 package org.iglooproject.wicket.more.util;
 
+/**
+ * @deprecated Use new API date from java.time.
+ */
+@Deprecated
 public enum DatePattern implements IDatePattern {
 	
 	DAY("date.format.day", "javascript.date.format.day"),

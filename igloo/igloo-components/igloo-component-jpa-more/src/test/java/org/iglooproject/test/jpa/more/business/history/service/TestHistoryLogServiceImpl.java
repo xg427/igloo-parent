@@ -1,8 +1,10 @@
 package org.iglooproject.test.jpa.more.business.history.service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
+import org.iglooproject.commons.util.date.Dates;
 import org.iglooproject.functional.Supplier2;
 import org.iglooproject.jpa.more.business.history.service.AbstractHistoryLogServiceImpl;
 import org.iglooproject.test.jpa.more.business.history.dao.ITestHistoryLogDao;
@@ -26,7 +28,7 @@ public class TestHistoryLogServiceImpl extends AbstractHistoryLogServiceImpl<Tes
 	}
 	
 	@Override
-	protected <T> TestHistoryLog newHistoryLog(Date date, TestHistoryEventType eventType, List<TestHistoryDifference> differences,
+	protected <T> TestHistoryLog newHistoryLog(LocalDateTime date, TestHistoryEventType eventType, List<TestHistoryDifference> differences,
 			T mainObject, TestHistoryLogAdditionalInformationBean additionalInformation) {
 		TestHistoryLog log = new TestHistoryLog(date, eventType, valueService.create(mainObject));
 		
@@ -37,6 +39,16 @@ public class TestHistoryLogServiceImpl extends AbstractHistoryLogServiceImpl<Tes
 		}
 		
 		return log;
+	}
+
+	/**
+	 * @deprecated Use new API date from java.time.
+	 */
+	@Deprecated
+	@Override
+	protected <T> TestHistoryLog newHistoryLog(Date date, TestHistoryEventType eventType, List<TestHistoryDifference> differences,
+			T mainObject, TestHistoryLogAdditionalInformationBean additionalInformation) {
+		return newHistoryLog(Dates.toLocalDateTime(date), eventType, differences, mainObject, additionalInformation);
 	}
 
 	@Override

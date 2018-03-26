@@ -7,10 +7,13 @@ import java.text.DateFormat;
 import java.text.Format;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.Temporal;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.Objects;
 
 import org.apache.wicket.Localizer;
 import org.apache.wicket.model.IModel;
@@ -23,8 +26,8 @@ import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.wicket.markup.html.basic.AbstractCoreLabel;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
+import org.iglooproject.wicket.more.date.pattern.IDatePattern;
 import org.iglooproject.wicket.more.model.LocaleAwareReadOnlyModel;
-import org.iglooproject.wicket.more.util.IDatePattern;
 import org.iglooproject.wicket.more.util.model.Detachables;
 import org.iglooproject.wicket.more.util.model.Models;
 
@@ -436,10 +439,18 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 		return fromFormat(formatFunction);
 	}
 	
+	/**
+	 * @deprecated Use new API date from java.time.
+	 */
+	@Deprecated
 	public static <T extends Date> Renderer<T> fromDateFormat(DateFormat format) {
 		return fromFormat(format);
 	}
 	
+	/**
+	 * @deprecated Use new API date from java.time.
+	 */
+	@Deprecated
 	public static <T extends Date> Renderer<T> fromDateFormat(SerializableFunction2<? super Locale, ? extends DateFormat> formatFunction) {
 		return fromFormat(formatFunction);
 	}
@@ -469,6 +480,36 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 			checkNotNull(locale);
 			Format format = formatFunction.apply(locale);
 			return format.format(value);
+		}
+	}
+	
+	public static <T extends Temporal> Renderer<T> fromDateTimeFormatter(DateTimeFormatter formatter) {
+		Objects.requireNonNull(formatter);
+		return fromDateTimeFormatter((locale) -> formatter.withLocale(locale));
+	}
+	
+	public static <T extends Temporal> Renderer<T> fromDateTimeFormatter(SerializableFunction2<? super Locale, ? extends DateTimeFormatter> formatterFunction) {
+		return new TemporalRenderer<T>(formatterFunction);
+	}
+	
+	private static class TemporalRenderer<T extends Temporal> extends Renderer<T> {
+		
+		private static final long serialVersionUID = 1L;
+		
+		private final SerializableFunction2<? super Locale, ? extends DateTimeFormatter> formatterFunction;
+		
+		public TemporalRenderer(SerializableFunction2<? super Locale, ? extends DateTimeFormatter> formatterFunction) {
+			super();
+			this.formatterFunction = checkNotNull(formatterFunction);
+		}
+		
+		@Override
+		public String render(T value, Locale locale) {
+			checkNotNull(locale);
+			if (value == null) {
+				return null;
+			}
+			return formatterFunction.apply(locale).format(value);
 		}
 	}
 	
@@ -625,11 +666,30 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 		}
 	}
 	
-	public static <T extends Date> Renderer<T> fromDatePattern(final IDatePattern datePattern) {
+	/**
+	 * @deprecated Use new API date from java.time.
+	 */
+	@Deprecated
+	public static <T extends Date> Renderer<T> fromDatePattern(final org.iglooproject.wicket.more.util.IDatePattern datePattern) {
 		Renderer<T> renderer = fromFormat(
 				(locale) -> new SimpleDateFormat(Localizer.get().getString(datePattern.getJavaPatternKey(), null, null, locale, null, (IModel<String>) null), locale)
 		);
 		if (datePattern.capitalize()) {
+			renderer = renderer.compose(Functions2.capitalize());
+		}
+		return renderer;
+	}
+	
+	public static <T extends Temporal> Renderer<T> fromDatePattern(final IDatePattern pattern) {
+		Renderer<T> renderer = fromDateTimeFormatter(
+				(locale) -> DateTimeFormatter.ofPattern(
+						Localizer.get().getString(
+								pattern.getJavaPatternKey(), null, null, locale, null, (IModel<String>) null
+						)
+				)
+		);
+		
+		if (pattern.capitalize()) {
 			renderer = renderer.compose(Functions2.capitalize());
 		}
 		return renderer;
@@ -731,7 +791,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 	 *         a renderer used to display the value and the unit associated with a given {@link Range} bound
 	 * @see {@link #count(String)}, {@link #count(String, Renderer)}
 	 *         for rendering any countable value with its unit
-	 * @see {@link #fromDatePattern(IDatePattern)}, {@link #fromDateFormat(DateFormat)}
+	 * @see {@link #fromDatePattern(org.iglooproject.wicket.more.util.IDatePattern)}, {@link #fromDateFormat(DateFormat)}
 	 *         for fully rendering dates as without-unit-values without bothering with custom units
 	 * @throws MissingResourceException
 	 *         if the resource key formed by associating the base key and one of the suffixes cannot be found

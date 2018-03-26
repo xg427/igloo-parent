@@ -1,14 +1,12 @@
 package org.iglooproject.jpa.more.business.history.util;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.google.common.collect.ImmutableList;
-
 import org.iglooproject.commons.util.CloneUtils;
+import org.iglooproject.commons.util.date.Dates;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryDifference;
@@ -16,6 +14,9 @@ import org.iglooproject.jpa.more.business.history.model.AbstractHistoryLog;
 import org.iglooproject.jpa.more.business.history.model.bean.AbstractHistoryLogAdditionalInformationBean;
 import org.iglooproject.jpa.more.business.history.service.IGenericHistoryLogService;
 import org.iglooproject.jpa.more.util.transaction.model.ITransactionSynchronizationBeforeCommitTask;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.google.common.collect.ImmutableList;
 
 public class HistoryLogBeforeCommitTask<T,
 				HLAIB extends AbstractHistoryLogAdditionalInformationBean,
@@ -24,7 +25,7 @@ public class HistoryLogBeforeCommitTask<T,
 				HD extends AbstractHistoryDifference<HD, HL>>
 		implements ITransactionSynchronizationBeforeCommitTask {
 	
-	protected final Date date;
+	protected final LocalDateTime date;
 	
 	protected final HET eventType;
 	
@@ -35,12 +36,16 @@ public class HistoryLogBeforeCommitTask<T,
 	@Autowired
 	private IGenericHistoryLogService<HL, HET, HD, HLAIB> historyLogService;
 
-	public HistoryLogBeforeCommitTask(Date date, HET eventType, T mainObject, HLAIB additionalInformation) {
+	public HistoryLogBeforeCommitTask(LocalDateTime date, HET eventType, T mainObject, HLAIB additionalInformation) {
 		super();
 		this.date = CloneUtils.clone(date);
 		this.eventType = eventType;
 		this.mainObject = mainObject;
 		this.additionalInformation = additionalInformation;
+	}
+	
+	public HistoryLogBeforeCommitTask(Date date, HET eventType, T mainObject, HLAIB additionalInformation) {
+		this(Dates.toLocalDateTime(date), eventType, mainObject, additionalInformation);
 	}
 	
 	/**

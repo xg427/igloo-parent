@@ -8,8 +8,8 @@ import java.io.FileFilter;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.filefilter.DelegateFileFilter;
@@ -18,6 +18,7 @@ import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.NameFileFilter;
 import org.assertj.core.api.Assertions;
 import org.iglooproject.commons.io.FileUtils;
+import org.iglooproject.commons.util.date.Dates;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -150,7 +151,7 @@ public class TestFileUtils {
 	@Test
 	public void cleanNotExisting() {
 		File file = new File(folder.getRoot(), "notExisting");
-		Assertions.assertThatCode(() -> FileUtils.cleanDirectory(file, null)).isInstanceOf(IllegalArgumentException.class);
+		Assertions.assertThatCode(() -> FileUtils.cleanDirectory(file, (LocalDateTime) null)).isInstanceOf(IllegalArgumentException.class);
 	}
 
 	/**
@@ -158,7 +159,7 @@ public class TestFileUtils {
 	 */
 	@Test
 	public void cleanDirectoryNull() {
-		Assertions.assertThatCode(() -> FileUtils.cleanDirectory(null, null)).isInstanceOf(IllegalArgumentException.class);
+		Assertions.assertThatCode(() -> FileUtils.cleanDirectory(null, (LocalDateTime) null)).isInstanceOf(IllegalArgumentException.class);
 	}
 
 	/**
@@ -167,7 +168,7 @@ public class TestFileUtils {
 	@Test
 	public void testCleanDirectoryWithFile() throws IOException {
 		File file = folder.newFile("test");
-		Assertions.assertThatCode(() -> FileUtils.cleanDirectory(file, null)).isInstanceOf(IllegalArgumentException.class);
+		Assertions.assertThatCode(() -> FileUtils.cleanDirectory(file, (LocalDateTime) null)).isInstanceOf(IllegalArgumentException.class);
 	}
 
 	/**
@@ -183,7 +184,7 @@ public class TestFileUtils {
 		Assertions.assertThat(file1.createNewFile()).isTrue();
 		Assertions.assertThat(file2.createNewFile()).isTrue();
 		
-		FileUtils.cleanDirectory(subFolder, null);
+		FileUtils.cleanDirectory(subFolder, (LocalDateTime) null);
 		
 		Assertions.assertThat(folder.getRoot().exists()).isTrue().as("Parent folder must be kept");
 		Assertions.assertThat(subFolder.exists()).isTrue().as("Cleaned folder must be kept");
@@ -204,7 +205,7 @@ public class TestFileUtils {
 		File file2 = new File(subFolder, "file2");
 		Assertions.assertThat(file1.createNewFile()).isTrue();
 		
-		Date date = waitSomeTime();
+		LocalDateTime date = waitSomeTime();
 		Assertions.assertThat(file2.createNewFile()).isTrue();
 		
 		FileUtils.cleanDirectory(subFolder, date);
@@ -228,7 +229,7 @@ public class TestFileUtils {
 		Assertions.assertThat(file1.createNewFile()).isTrue();
 		Assertions.assertThat(file2.createNewFile()).isTrue();
 		
-		Date date = waitSomeTime();
+		LocalDateTime date = waitSomeTime();
 		Assertions.assertThat(dir1.mkdirs()).isTrue();
 		Assertions.assertThat(file3.mkdirs()).isTrue();
 		
@@ -254,7 +255,7 @@ public class TestFileUtils {
 		Assertions.assertThat(file1.createNewFile()).isTrue();
 		Assertions.assertThat(file2.createNewFile()).isTrue();
 		
-		Date date = waitSomeTime();
+		LocalDateTime date = waitSomeTime();
 		// update file1 lastModification
 		try (FileOutputStream fos = new FileOutputStream(file1)) {
 			fos.write(1000);
@@ -277,7 +278,7 @@ public class TestFileUtils {
 		Mockito.when(file.listFiles()).thenReturn(null);
 		Mockito.when(file.exists()).thenReturn(true);
 		Mockito.when(file.isDirectory()).thenReturn(true);
-		Assertions.assertThatCode(() -> FileUtils.cleanDirectory(file, null)).isInstanceOf(IOException.class);
+		Assertions.assertThatCode(() -> FileUtils.cleanDirectory(file, (LocalDateTime) null)).isInstanceOf(IOException.class);
 	}
 
 	/**
@@ -296,7 +297,7 @@ public class TestFileUtils {
 		Assertions.assertThat(file2.createNewFile()).isTrue();
 		dir1.setWritable(false);
 		
-		Assertions.assertThatCode(() -> FileUtils.cleanDirectory(subFolder, null)).isInstanceOf(IOException.class);
+		Assertions.assertThatCode(() -> FileUtils.cleanDirectory(subFolder, (LocalDateTime) null)).isInstanceOf(IOException.class);
 		
 		Assertions.assertThat(folder.getRoot().exists()).isTrue().as("Parent folder must be kept");
 		Assertions.assertThat(subFolder.exists()).isTrue().as("Cleaned folder must be kept");
@@ -426,8 +427,8 @@ public class TestFileUtils {
 		Assertions.assertThat(files).containsSequence(file1, file2, file3);
 	}
 
-	private Date waitSomeTime() throws InterruptedException {
-		Date date = new Date();
+	private LocalDateTime  waitSomeTime() throws InterruptedException {
+		LocalDateTime date = Dates.nowLocalDateTime();
 		// under 1000ms, delta-time is not high enough to ensure that file2 last modification date is late enough
 		Thread.sleep(1000);
 		return date;

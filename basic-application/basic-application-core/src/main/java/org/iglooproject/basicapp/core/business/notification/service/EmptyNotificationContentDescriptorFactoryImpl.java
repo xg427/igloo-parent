@@ -1,5 +1,6 @@
 package org.iglooproject.basicapp.core.business.notification.service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import org.iglooproject.basicapp.core.business.user.model.User;
@@ -15,8 +16,17 @@ public class EmptyNotificationContentDescriptorFactoryImpl implements IBasicAppl
 	private static final INotificationContentDescriptor DEFAULT_DESCRIPTOR =
 			NotificationContentDescriptors.explicit("defaultSubject", "defaultTextBody", "defaultHtmlBody");
 
+	/**
+	 * @deprecated Use new API date from java.time.
+	 */
+	@Deprecated
 	@Override
 	public INotificationContentDescriptor example(User user, Date date) {
+		return DEFAULT_DESCRIPTOR;
+	}
+
+	@Override
+	public INotificationContentDescriptor example(User user, LocalDateTime date) {
 		return DEFAULT_DESCRIPTOR;
 	}
 

@@ -6,18 +6,10 @@ import static org.iglooproject.spring.property.SpringSecurityPropertyIds.PASSWOR
 import static org.iglooproject.spring.property.SpringSecurityPropertyIds.PASSWORD_RECOVERY_REQUEST_EXPIRATION_MINUTES;
 import static org.iglooproject.spring.property.SpringSecurityPropertyIds.PASSWORD_RECOVERY_REQUEST_TOKEN_RANDOM_COUNT;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.time.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import com.google.common.collect.EvictingQueue;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
 import org.iglooproject.basicapp.core.business.history.model.atomic.HistoryEventType;
 import org.iglooproject.basicapp.core.business.history.model.bean.HistoryLogAdditionalInformationBean;
 import org.iglooproject.basicapp.core.business.history.service.IHistoryLogService;
@@ -27,12 +19,19 @@ import org.iglooproject.basicapp.core.business.user.model.atomic.UserPasswordRec
 import org.iglooproject.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestType;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.basicapp.core.security.model.SecurityOptions;
+import org.iglooproject.commons.util.date.Dates;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.person.model.GenericUser;
 import org.iglooproject.jpa.util.HibernateUtils;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.google.common.collect.EvictingQueue;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 public class SecurityManagementServiceImpl implements ISecurityManagementService {
 
@@ -97,7 +96,7 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 	@Override
 	public void initiatePasswordRecoveryRequest(User user, UserPasswordRecoveryRequestType type,
 			UserPasswordRecoveryRequestInitiator initiator, User author) throws ServiceException, SecurityServiceException {
-		Date now = new Date();
+		LocalDateTime now = Dates.nowLocalDateTime();
 		
 		user.getPasswordRecoveryRequest().setToken(RandomStringUtils.randomAlphanumeric(propertyService.get(PASSWORD_RECOVERY_REQUEST_TOKEN_RANDOM_COUNT)));
 		user.getPasswordRecoveryRequest().setCreationDate(now);
@@ -128,10 +127,10 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 			return false;
 		}
 		
-		Date expirationDate = DateUtils.addDays(user.getPasswordInformation().getLastUpdateDate(), propertyService.get(PASSWORD_EXPIRATION_DAYS));
-		Date now = new Date();
+		LocalDateTime expirationDate = user.getPasswordInformation().getLastUpdateDate().plusDays(propertyService.get(PASSWORD_EXPIRATION_DAYS));
+		LocalDateTime now = Dates.nowLocalDateTime();
 		
-		return now.after(expirationDate);
+		return now.isAfter(expirationDate);
 	}
 
 	@Override
@@ -142,10 +141,10 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 			return true;
 		}
 		
-		Date expirationDate = DateUtils.addMinutes(user.getPasswordRecoveryRequest().getCreationDate(), propertyService.get(PASSWORD_RECOVERY_REQUEST_EXPIRATION_MINUTES));
-		Date now = new Date();
+		LocalDateTime expirationDate = user.getPasswordRecoveryRequest().getCreationDate().plusDays(propertyService.get(PASSWORD_RECOVERY_REQUEST_EXPIRATION_MINUTES));
+		LocalDateTime now = Dates.nowLocalDateTime();
 		
-		return now.after(expirationDate);
+		return now.isAfter(expirationDate);
 	}
 
 	@Override
@@ -160,7 +159,7 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 		}
 		
 		userService.setPasswords(user, password);
-		user.getPasswordInformation().setLastUpdateDate(new Date());
+		user.getPasswordInformation().setLastUpdateDate(Dates.nowLocalDateTime());
 		
 		if (getOptions(user).isPasswordHistoryEnabled()) {
 			EvictingQueue<String> historyQueue = EvictingQueue.create(propertyService.get(PASSWORD_HISTORY_COUNT));

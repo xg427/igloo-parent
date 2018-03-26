@@ -1,8 +1,10 @@
 package org.iglooproject.jpa.more.business.history.service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
+import org.iglooproject.commons.util.date.Dates;
 import org.iglooproject.functional.Supplier2;
 import org.iglooproject.jpa.business.generic.service.GenericEntityServiceImpl;
 import org.iglooproject.jpa.exception.SecurityServiceException;
@@ -39,7 +41,7 @@ public abstract class AbstractHistoryLogServiceImpl<HL extends AbstractHistoryLo
 	}
 	
 	@Override
-	public <T> HL logNow(Date date, HET eventType, List<HD> differences, T mainObject, HLAIB additionalInformation)
+	public <T> HL logNow(LocalDateTime date, HET eventType, List<HD> differences, T mainObject, HLAIB additionalInformation)
 			throws ServiceException, SecurityServiceException {
 		HL log = newHistoryLog(date, eventType, differences, mainObject, additionalInformation);
 
@@ -52,8 +54,19 @@ public abstract class AbstractHistoryLogServiceImpl<HL extends AbstractHistoryLo
 		return log;
 	}
 	
+	/**
+	 * @deprecated Use new API date from java.time.
+	 */
+	@Deprecated
+	public <T> HL logNow(Date date, HET eventType, List<HD> differences, T mainObject, HLAIB additionalInformation)
+			throws ServiceException, SecurityServiceException {
+		return logNow(Dates.toLocalDateTime(date), eventType, differences, mainObject, additionalInformation);
+	}
+	
+	protected abstract <T> HL newHistoryLog(LocalDateTime date, HET eventType, List<HD> differences, T mainObject, HLAIB additionalInformation);
+	
 	protected abstract <T> HL newHistoryLog(Date date, HET eventType, List<HD> differences, T mainObject, HLAIB additionalInformation);
-
+	
 	protected abstract Supplier2<HD> newHistoryDifferenceSupplier();
 
 	protected void setAdditionalInformation(HL log, HLAIB additionalInformation) {

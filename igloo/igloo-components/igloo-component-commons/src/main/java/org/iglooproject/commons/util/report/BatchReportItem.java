@@ -1,12 +1,12 @@
 package org.iglooproject.commons.util.report;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.bindgen.Bindable;
-
 import org.iglooproject.commons.util.CloneUtils;
+import org.iglooproject.commons.util.date.Dates;
 
 @Bindable
 public class BatchReportItem implements Serializable {
@@ -19,7 +19,7 @@ public class BatchReportItem implements Serializable {
 
 	private Exception exception;
 
-	private Date date;
+	private LocalDateTime date;
 
 	protected BatchReportItem() {
 	}
@@ -27,7 +27,7 @@ public class BatchReportItem implements Serializable {
 	public BatchReportItem(BatchReportItemSeverity severity, String message) {
 		setSeverity(severity);
 		setMessage(message);
-		setDate(new Date());
+		setDate(Dates.nowLocalDateTime());
 	}
 
 	public BatchReportItem(BatchReportItemSeverity severity, String message,
@@ -60,11 +60,11 @@ public class BatchReportItem implements Serializable {
 		return exception;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDateTime date) {
 		this.date = CloneUtils.clone(date);
 	}
 
-	public Date getDate() {
+	public LocalDateTime getDate() {
 		return CloneUtils.clone(date);
 	}
 

@@ -1,9 +1,10 @@
 package org.iglooproject.basicapp.core.business.notification.service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Locale;
 
 import org.iglooproject.basicapp.core.business.user.model.User;
+import org.iglooproject.commons.util.date.Dates;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.notification.model.SimpleRecipient;
 import org.iglooproject.spring.notification.service.AbstractNotificationServiceImpl;
@@ -23,7 +24,7 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 	
 	@Override
 	public void sendExampleNotification(User user) throws ServiceException {
-		Date date = new Date();
+		LocalDateTime date = Dates.nowLocalDateTime();
 		String url = notificationUrlBuilderService.getUserDescriptionUrl(user);
 		
 		try {
@@ -54,13 +55,14 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 	@Override
 	public void sendExampleNotification(User userTo, String from) throws ServiceException {
 		try {
-			Date date = new Date();
+			LocalDateTime date = Dates.nowLocalDateTime();
+			
 			builder()
-			.sender("no-reply@basicapp.org")
-			.from(from)
-			.to(new SimpleRecipient(Locale.FRANCE, userTo.getEmail(), userTo.getDisplayName()))
-			.content(contentDescriptorFactory.example(userTo, date))
-			.send();
+					.sender("no-reply@basicapp.org")
+					.from(from)
+					.to(new SimpleRecipient(Locale.FRANCE, userTo.getEmail(), userTo.getDisplayName()))
+					.content(contentDescriptorFactory.example(userTo, date))
+					.send();
 		} catch (RuntimeException | ServiceException e) {
 			throw new ServiceException(ERROR_EXCEPTION_MESSAGE, e);
 		}

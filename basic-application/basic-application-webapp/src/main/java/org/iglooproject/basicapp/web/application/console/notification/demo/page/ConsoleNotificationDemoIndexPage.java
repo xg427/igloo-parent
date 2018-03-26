@@ -1,6 +1,5 @@
 package org.iglooproject.basicapp.web.application.console.notification.demo.page;
 
-import java.util.Date;
 import java.util.List;
 
 import org.apache.wicket.Session;
@@ -15,6 +14,7 @@ import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.console.notification.demo.template.ConsoleNotificationDemoTemplate;
 import org.iglooproject.basicapp.web.application.console.notification.demo.util.NotificationDemoEntry;
+import org.iglooproject.commons.util.date.Dates;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.notification.exception.NotificationContentRenderingException;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
@@ -102,7 +102,7 @@ public class ConsoleNotificationDemoIndexPage extends ConsoleNotificationDemoTem
 					private static final long serialVersionUID = 1L;
 					@Override
 					public INotificationContentDescriptor getDescriptor() {
-						return descriptorService.example(getFirstInRange(User.class, DEFAULT_ID_RANGE), new Date());
+						return descriptorService.example(getFirstInRange(User.class, DEFAULT_ID_RANGE), Dates.nowLocalDateTime());
 					}
 				}
 				// Add new demo entries here

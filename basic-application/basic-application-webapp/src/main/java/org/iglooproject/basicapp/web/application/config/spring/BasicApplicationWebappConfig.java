@@ -1,5 +1,9 @@
 package org.iglooproject.basicapp.web.application.config.spring;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 import org.iglooproject.basicapp.core.business.user.model.BasicUser;
@@ -12,6 +16,10 @@ import org.iglooproject.basicapp.web.application.common.template.resources.style
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
 import org.iglooproject.wicket.bootstrap4.config.spring.AbstractBootstrapWebappConfig;
+import org.iglooproject.wicket.more.date.pattern.LocalDatePattern;
+import org.iglooproject.wicket.more.date.pattern.LocalDateTimePattern;
+import org.iglooproject.wicket.more.date.pattern.LocalTimePattern;
+import org.iglooproject.wicket.more.date.pattern.ZonedDateTimePattern;
 import org.iglooproject.wicket.more.notification.service.IHtmlNotificationCssService;
 import org.iglooproject.wicket.more.notification.service.IWicketContextProvider;
 import org.iglooproject.wicket.more.rendering.BooleanRenderer;
@@ -48,18 +56,23 @@ public class BasicApplicationWebappConfig extends AbstractBootstrapWebappConfig 
 	@Override
 	public IRendererService rendererService(IWicketContextProvider wicketContextProvider) {
 		RendererServiceImpl rendererService = new RendererServiceImpl(wicketContextProvider);
-
+		
 		rendererService.registerRenderer(Boolean.class, BooleanRenderer.get());
 		rendererService.registerRenderer(boolean.class, BooleanRenderer.get());
-
+		
 		Renderer<Date> shortDateRenderer = Renderer.fromDatePattern(DatePattern.SHORT_DATE);
 		rendererService.registerRenderer(Date.class, shortDateRenderer);
 		rendererService.registerRenderer(java.sql.Date.class, shortDateRenderer);
-
+		
+		rendererService.registerRenderer(LocalDateTime.class, Renderer.fromDatePattern(LocalDateTimePattern.SHORT_DATETIME));
+		rendererService.registerRenderer(LocalDate.class, Renderer.fromDatePattern(LocalDatePattern.SHORT_DATE));
+		rendererService.registerRenderer(LocalTime.class, Renderer.fromDatePattern(LocalTimePattern.TIME));
+		rendererService.registerRenderer(ZonedDateTime.class, Renderer.fromDatePattern(ZonedDateTimePattern.SHORT_DATETIME));
+		
 		rendererService.registerRenderer(User.class, UserRenderer.get());
 		rendererService.registerRenderer(TechnicalUser.class, UserRenderer.get());
 		rendererService.registerRenderer(BasicUser.class, UserRenderer.get());
-
+		
 		return rendererService;
 	}
 

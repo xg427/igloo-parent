@@ -6,12 +6,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
-import java.util.Calendar;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -61,7 +60,7 @@ import com.google.common.collect.Lists;
 
 public class TestHistoryLogService extends AbstractJpaMoreTestCase {
 	
-	private static final Date DATE = new Date();
+	private static final LocalDateTime DATE = LocalDateTime.now();
 
 	/*
 	 * Only here to mock some parameters passed to the log() method.
@@ -217,7 +216,7 @@ public class TestHistoryLogService extends AbstractJpaMoreTestCase {
 				});
 
 		// The value must be truncated because timestamps do not have the same precision as java.util.Date
-		final Date before = DateUtils.truncate(new Date(), Calendar.SECOND);
+		final LocalDateTime before = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
 		
 		writeTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			@SuppressWarnings("unchecked")
@@ -235,7 +234,7 @@ public class TestHistoryLogService extends AbstractJpaMoreTestCase {
 			}
 		});
 		
-		final Date after = new Date();
+		final LocalDateTime after = LocalDateTime.now();
 
 		List<TestHistoryLog> logs = historyLogService.list();
 		
@@ -245,15 +244,15 @@ public class TestHistoryLogService extends AbstractJpaMoreTestCase {
 
 		assertNotNull(log.getId());
 		
-		assertThat(log.getDate(), new TypeSafeMatcher<Date>() {
+		assertThat(log.getDate(), new TypeSafeMatcher<LocalDateTime>() {
 			@Override
 			public void describeTo(Description description) {
 				description.appendText("a date between ").appendValue(before).appendText(" and ").appendValue(after);
 			}
 
 			@Override
-			protected boolean matchesSafely(Date item) {
-				return !item.before(before) && !item.after(after);
+			protected boolean matchesSafely(LocalDateTime item) {
+				return !item.isBefore(before) && !item.isAfter(after);
 			}
 		});
 		assertEquals(TestHistoryEventType.EVENT1, log.getEventType());
@@ -287,7 +286,7 @@ public class TestHistoryLogService extends AbstractJpaMoreTestCase {
 				});
 
 		// The value must be truncated because timestamps do not have the same precision as java.util.Date
-		final Date before = DateUtils.truncate(new Date(), Calendar.SECOND);
+		final LocalDateTime before = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
 		
 		writeTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			@SuppressWarnings("unchecked")
@@ -311,7 +310,7 @@ public class TestHistoryLogService extends AbstractJpaMoreTestCase {
 			}
 		});
 		
-		final Date after = new Date();
+		final LocalDateTime after = LocalDateTime.now();
 
 		List<TestHistoryLog> logs = historyLogService.list();
 		
@@ -321,15 +320,15 @@ public class TestHistoryLogService extends AbstractJpaMoreTestCase {
 
 		assertNotNull(log.getId());
 		
-		assertThat(log.getDate(), new TypeSafeMatcher<Date>() {
+		assertThat(log.getDate(), new TypeSafeMatcher<LocalDateTime>() {
 			@Override
 			public void describeTo(Description description) {
 				description.appendText("a date between ").appendValue(before).appendText(" and ").appendValue(after);
 			}
 
 			@Override
-			protected boolean matchesSafely(Date item) {
-				return !item.before(before) && !item.after(after);
+			protected boolean matchesSafely(LocalDateTime item) {
+				return !item.isBefore(before) && !item.isAfter(after);
 			}
 		});
 		assertEquals(TestHistoryEventType.EVENT1, log.getEventType());

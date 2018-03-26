@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.iglooproject.commons.util.date.Dates;
 import org.iglooproject.export.excel.AbstractExcelTableExport;
 import org.iglooproject.export.excel.ColumnInformation;
 import org.iglooproject.export.test.person.Person;
@@ -57,9 +58,9 @@ public class PersonHSSFExport extends AbstractExcelTableExport {
 		} else if ("lastname".equals(column)) {
 			addTextCell(currentRow, columnIndex, person.getLastName());
 		} else if ("birth date".equals(column)) {
-			addDateCell(currentRow, columnIndex, person.getBirthDate());
+			addLocalDateCell(currentRow, columnIndex, Dates.toLocalDate(person.getBirthDate()));
 		} else if ("birth hour".equals(column)) {
-			addDateTimeCell(currentRow, columnIndex, person.getBirthDate());
+			addLocalDateTimeCell(currentRow, columnIndex, person.getBirthDate());
 		} else if ("age".equals(column)) {
 			addIntegerCell(currentRow, columnIndex, person.getAge());
 		} else if ("size".equals(column)) {

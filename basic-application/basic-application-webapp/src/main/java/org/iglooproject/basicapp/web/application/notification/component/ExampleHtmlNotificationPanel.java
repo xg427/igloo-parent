@@ -1,6 +1,6 @@
 package org.iglooproject.basicapp.web.application.notification.component;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -19,7 +19,7 @@ public class ExampleHtmlNotificationPanel extends AbstractHtmlNotificationPanel<
 	
 	private static final long serialVersionUID = -2406171975975069084L;
 	
-	public ExampleHtmlNotificationPanel(String id, IModel<User> userModel, IModel<Date> dateModel) {
+	public ExampleHtmlNotificationPanel(String id, IModel<User> userModel, IModel<LocalDateTime> dateModel) {
 		super(id, userModel);
 		
 		// Intro

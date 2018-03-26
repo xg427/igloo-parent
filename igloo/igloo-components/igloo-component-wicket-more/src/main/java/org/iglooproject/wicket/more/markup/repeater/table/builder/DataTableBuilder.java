@@ -1,5 +1,9 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +21,10 @@ import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
+import org.iglooproject.wicket.more.date.pattern.ILocalDatePattern;
+import org.iglooproject.wicket.more.date.pattern.ILocalDateTimePattern;
+import org.iglooproject.wicket.more.date.pattern.ILocalTimePattern;
+import org.iglooproject.wicket.more.date.pattern.IZonedDateTimePattern;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.BindingOneParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.descriptor.mapper.FunctionOneParameterLinkDescriptorMapper;
@@ -273,11 +281,35 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 			return new CoreLabel(componentId, renderer.asModel(BindingModel.of(rowModel, binding)));
 		}
 	}
-
+	
 	@Override
 	public IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel,
 			ICoreBinding<? super T, ? extends Date> binding, IDatePattern datePattern) {
 		return addLabelColumn(headerModel, binding, Renderer.fromDatePattern(datePattern));
+	}
+	
+	@Override
+	public IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel,
+			ICoreBinding<? super T, ? extends LocalDateTime> binding, ILocalDateTimePattern pattern) {
+		return addLabelColumn(headerModel, binding, Renderer.fromDatePattern(pattern));
+	}
+	
+	@Override
+	public IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel,
+			ICoreBinding<? super T, ? extends LocalDate> binding, ILocalDatePattern pattern) {
+		return addLabelColumn(headerModel, binding, Renderer.fromDatePattern(pattern));
+	}
+	
+	@Override
+	public IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel,
+			ICoreBinding<? super T, ? extends LocalTime> binding, ILocalTimePattern pattern) {
+		return addLabelColumn(headerModel, binding, Renderer.fromDatePattern(pattern));
+	}
+	
+	@Override
+	public IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel,
+			ICoreBinding<? super T, ? extends ZonedDateTime> binding, IZonedDateTimePattern pattern) {
+		return addLabelColumn(headerModel, binding, Renderer.fromDatePattern(pattern));
 	}
 	
 	@Override
@@ -488,10 +520,38 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 			return DataTableBuilder.this.addLabelColumn(headerModel, function, renderer);
 		}
 
+		/**
+		 * @deprecated Use new API date from java.time.
+		 */
+		@Deprecated
 		@Override
 		public IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, ICoreBinding<? super T, ? extends Date> binding,
 				IDatePattern datePattern) {
 			return DataTableBuilder.this.addLabelColumn(headerModel, binding, datePattern);
+		}
+
+		@Override
+		public IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, ICoreBinding<? super T, ? extends LocalDateTime> binding,
+				ILocalDateTimePattern pattern) {
+			return DataTableBuilder.this.addLabelColumn(headerModel, binding, pattern);
+		}
+
+		@Override
+		public IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, ICoreBinding<? super T, ? extends LocalDate> binding,
+				ILocalDatePattern pattern) {
+			return DataTableBuilder.this.addLabelColumn(headerModel, binding, pattern);
+		}
+
+		@Override
+		public IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, ICoreBinding<? super T, ? extends LocalTime> binding,
+				ILocalTimePattern pattern) {
+			return DataTableBuilder.this.addLabelColumn(headerModel, binding, pattern);
+		}
+
+		@Override
+		public IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, ICoreBinding<? super T, ? extends ZonedDateTime> binding,
+				IZonedDateTimePattern pattern) {
+			return DataTableBuilder.this.addLabelColumn(headerModel, binding, pattern);
 		}
 
 		/**

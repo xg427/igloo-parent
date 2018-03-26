@@ -1,12 +1,13 @@
 package org.iglooproject.jpa.more.business.history.service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
+import org.iglooproject.commons.util.date.Dates;
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryLog;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryEventSummary;
 import org.iglooproject.jpa.util.HibernateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractHistoryEventSummaryServiceImpl<U> implements IGenericHistoryEventSummaryService<U> {
 	
@@ -22,11 +23,21 @@ public abstract class AbstractHistoryEventSummaryServiceImpl<U> implements IGene
 	
 	@Override
 	public void refresh(HistoryEventSummary evenement, Date date) {
+		refresh(evenement, Dates.toLocalDateTime(date));
+	}
+	
+	@Override
+	public void refresh(HistoryEventSummary evenement, LocalDateTime date) {
 		refresh(evenement, date, getDefaultSubject());
 	}
 	
 	@Override
 	public void refresh(HistoryEventSummary evenement, Date date, U subject) {
+		refresh(evenement, Dates.toLocalDateTime(date), subject);
+	}
+	
+	@Override
+	public void refresh(HistoryEventSummary evenement, LocalDateTime date, U subject) {
 		evenement.setDate(date);
 		evenement.setSubject(valueService.create(HibernateUtils.unwrap(subject)));
 	}
@@ -39,7 +50,7 @@ public abstract class AbstractHistoryEventSummaryServiceImpl<U> implements IGene
 	
 	@Override
 	public void clear(HistoryEventSummary event) {
-		event.setDate(null);
+		event.setDate((LocalDateTime) null);
 		event.setSubject(null);
 	}
 	

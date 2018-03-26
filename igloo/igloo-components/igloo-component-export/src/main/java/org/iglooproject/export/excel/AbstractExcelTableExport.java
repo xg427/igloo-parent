@@ -16,6 +16,9 @@
  */
 package org.iglooproject.export.excel;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -36,6 +39,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.iglooproject.commons.util.date.Dates;
 import org.iglooproject.functional.Joiners;
 
 import com.google.common.collect.ContiguousSet;
@@ -462,6 +466,42 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		}
 
 		return cell;
+	}
+	
+	/**
+	 * Ajoute une cellule au format date + heure.
+	 * 
+	 * @param row ligne
+	 * @param columnIndex numéro de la colonne
+	 * @param date date à insérer dans la cellule
+	 * @return cellule
+	 */
+	protected Cell addLocalDateTimeCell(Row row, int columnIndex, LocalDateTime date) {
+		return addDateTimeCell(row, columnIndex, Dates.toDate(date));
+	}
+
+	/**
+	 * Ajoute une cellule au format date + heure.
+	 * 
+	 * @param row ligne
+	 * @param columnIndex numéro de la colonne
+	 * @param date date à insérer dans la cellule
+	 * @return cellule
+	 */
+	protected Cell addLocalDateCell(Row row, int columnIndex, LocalDate date) {
+		return addDateCell(row, columnIndex, Dates.toDate(date));
+	}
+
+	/**
+	 * Ajoute une cellule au format date + heure.
+	 * 
+	 * @param row ligne
+	 * @param columnIndex numéro de la colonne
+	 * @param date date à insérer dans la cellule
+	 * @return cellule
+	 */
+	protected Cell addZonedDateTimeCell(Row row, int columnIndex, ZonedDateTime date) {
+		return addDateTimeCell(row, columnIndex, Dates.toDate(date));
 	}
 
 	/**

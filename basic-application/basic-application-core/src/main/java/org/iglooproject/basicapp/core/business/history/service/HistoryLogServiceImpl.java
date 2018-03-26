@@ -1,5 +1,6 @@
 package org.iglooproject.basicapp.core.business.history.service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import org.iglooproject.basicapp.core.business.history.model.atomic.HistoryEvent
 import org.iglooproject.basicapp.core.business.history.model.bean.HistoryLogAdditionalInformationBean;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
+import org.iglooproject.commons.util.date.Dates;
 import org.iglooproject.functional.Supplier2;
 import org.iglooproject.jpa.more.business.history.service.AbstractHistoryLogServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +33,7 @@ public class HistoryLogServiceImpl extends AbstractHistoryLogServiceImpl<History
 	}
 	
 	@Override
-	protected <T> HistoryLog newHistoryLog(Date date, HistoryEventType eventType, List<HistoryDifference> differences,
+	protected <T> HistoryLog newHistoryLog(LocalDateTime date, HistoryEventType eventType, List<HistoryDifference> differences,
 			T mainObject, HistoryLogAdditionalInformationBean additionalInformation) {
 		HistoryLog log = new HistoryLog(date, eventType, valueService.create(mainObject));
 		
@@ -43,6 +45,12 @@ public class HistoryLogServiceImpl extends AbstractHistoryLogServiceImpl<History
 		}
 		
 		return log;
+	}
+
+	@Override
+	protected <T> HistoryLog newHistoryLog(Date date, HistoryEventType eventType, List<HistoryDifference> differences,
+			T mainObject, HistoryLogAdditionalInformationBean additionalInformation) {
+		return newHistoryLog(Dates.toLocalDateTime(date), eventType, differences, mainObject, additionalInformation);
 	}
 
 	@Override

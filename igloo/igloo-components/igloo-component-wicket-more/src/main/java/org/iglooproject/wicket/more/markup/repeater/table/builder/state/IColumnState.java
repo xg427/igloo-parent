@@ -1,5 +1,9 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder.state;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -7,6 +11,10 @@ import org.apache.wicket.model.IModel;
 import org.iglooproject.commons.util.binding.ICoreBinding;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.jpa.more.business.sort.ISort;
+import org.iglooproject.wicket.more.date.pattern.ILocalDatePattern;
+import org.iglooproject.wicket.more.date.pattern.ILocalDateTimePattern;
+import org.iglooproject.wicket.more.date.pattern.ILocalTimePattern;
+import org.iglooproject.wicket.more.date.pattern.IZonedDateTimePattern;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.ActionColumnBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.column.ICoreColumn;
@@ -37,6 +45,18 @@ public interface IColumnState<T, S extends ISort<?>> extends IBuildState<T, S> {
 
 	IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel,
 			ICoreBinding<? super T, ? extends Date> binding, IDatePattern datePattern);
+
+	IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel,
+			ICoreBinding<? super T, ? extends LocalDateTime> binding, ILocalDateTimePattern pattern);
+
+	IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel,
+			ICoreBinding<? super T, ? extends LocalDate> binding, ILocalDatePattern pattern);
+
+	IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel,
+			ICoreBinding<? super T, ? extends LocalTime> binding, ILocalTimePattern pattern);
+
+	IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel,
+			ICoreBinding<? super T, ? extends ZonedDateTime> binding, IZonedDateTimePattern pattern);
 
 	<C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
 			ICoreBinding<? super T, C> binding, BootstrapRenderer<? super C> renderer);

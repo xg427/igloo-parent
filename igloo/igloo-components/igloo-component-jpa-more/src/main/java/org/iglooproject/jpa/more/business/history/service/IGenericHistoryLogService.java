@@ -1,5 +1,6 @@
 package org.iglooproject.jpa.more.business.history.service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -44,6 +45,13 @@ public interface IGenericHistoryLogService<
 			IHistoryDifferenceHandler<? super T, ? super HL> ... differenceHandlers)
 			throws ServiceException, SecurityServiceException;
 	
+	<T> HL logNow(LocalDateTime date, HET eventType, List<HD> differences, T mainObject, HLAIB additionalInformation)
+			throws ServiceException, SecurityServiceException;
+	
+	/**
+	 * @deprecated Use new API date from java.time.
+	 */
+	@Deprecated
 	<T> HL logNow(Date date, HET eventType, List<HD> differences, T mainObject, HLAIB additionalInformation)
 			throws ServiceException, SecurityServiceException;
 

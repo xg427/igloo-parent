@@ -3,6 +3,10 @@ package org.iglooproject.imports.table.common.mapping.column.builder.state;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.Locale;
 
@@ -138,6 +142,50 @@ public abstract class TypeState<TTable, TRow, TCell, TCellReference> {
 			return new DateState<TTable, TRow, TCell, TCellReference>() {
 				@Override
 				protected TypeStateSwitcher<Date> getStateSwitcher() {
+					return switcher;
+				}
+			};
+		}
+
+		@Override
+		public LocalDateTimeState<TTable, TRow, TCell, TCellReference> toLocalDateTime(Function2<? super T, ? extends LocalDateTime> function) {
+			final TypeStateSwitcher<LocalDateTime> switcher = newSwitcher(function);
+			return new LocalDateTimeState<TTable, TRow, TCell, TCellReference>() {
+				@Override
+				protected TypeStateSwitcher<LocalDateTime> getStateSwitcher() {
+					return switcher;
+				}
+			};
+		}
+
+		@Override
+		public LocalDateState<TTable, TRow, TCell, TCellReference> toLocalDate(Function2<? super T, ? extends LocalDate> function) {
+			final TypeStateSwitcher<LocalDate> switcher = newSwitcher(function);
+			return new LocalDateState<TTable, TRow, TCell, TCellReference>() {
+				@Override
+				protected TypeStateSwitcher<LocalDate> getStateSwitcher() {
+					return switcher;
+				}
+			};
+		}
+
+		@Override
+		public LocalTimeState<TTable, TRow, TCell, TCellReference> toLocalTime(Function2<? super T, ? extends LocalTime> function) {
+			final TypeStateSwitcher<LocalTime> switcher = newSwitcher(function);
+			return new LocalTimeState<TTable, TRow, TCell, TCellReference>() {
+				@Override
+				protected TypeStateSwitcher<LocalTime> getStateSwitcher() {
+					return switcher;
+				}
+			};
+		}
+
+		@Override
+		public ZonedDateTimeState<TTable, TRow, TCell, TCellReference> toZonedDateTime(Function2<? super T, ? extends ZonedDateTime> function) {
+			final TypeStateSwitcher<ZonedDateTime> switcher = newSwitcher(function);
+			return new ZonedDateTimeState<TTable, TRow, TCell, TCellReference>() {
+				@Override
+				protected TypeStateSwitcher<ZonedDateTime> getStateSwitcher() {
 					return switcher;
 				}
 			};

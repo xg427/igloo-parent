@@ -57,4 +57,5 @@ public final class Equivalences {
 			return DATE_EQUIVALENCE;
 		}
 	};
+
 }

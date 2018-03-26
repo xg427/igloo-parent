@@ -1,7 +1,7 @@
 package org.iglooproject.basicapp.core.business.user.model.embeddable;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -10,7 +10,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.Transient;
 
 import org.bindgen.Bindable;
-
 import org.iglooproject.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import org.iglooproject.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestType;
 import org.iglooproject.commons.util.CloneUtils;
@@ -25,7 +24,7 @@ public class UserPasswordRecoveryRequest implements Serializable {
 	private String token;
 
 	@Column
-	private Date creationDate;
+	private LocalDateTime creationDate;
 
 	@Column
 	@Enumerated(EnumType.STRING)
@@ -43,11 +42,11 @@ public class UserPasswordRecoveryRequest implements Serializable {
 		this.token = token;
 	}
 
-	public Date getCreationDate() {
+	public LocalDateTime getCreationDate() {
 		return CloneUtils.clone(creationDate);
 	}
 
-	public void setCreationDate(Date creationDate) {
+	public void setCreationDate(LocalDateTime creationDate) {
 		this.creationDate = CloneUtils.clone(creationDate);
 	}
 

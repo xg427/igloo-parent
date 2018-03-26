@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -14,6 +15,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.NameFileFilter;
+import org.iglooproject.commons.util.date.Dates;
 
 import com.google.common.collect.Lists;
 
@@ -111,6 +113,14 @@ public final class FileUtils {
 	}
 	
 	/**
+	 * @deprecated Use new API date from java.time.
+	 */
+	@Deprecated
+	public static void cleanDirectory(File directory, Date onlyCleanFilesOlderThanThisDate) throws IOException {
+		cleanDirectory(directory, Dates.toLocalDateTime(onlyCleanFilesOlderThanThisDate));
+	}
+	
+	/**
 	 * Based on org.apache.commons.io.FileUtils#cleanDirectory(File directory) but only deletes files older than a
 	 * certain date.
 	 * 
@@ -118,7 +128,7 @@ public final class FileUtils {
 	 * @param onlyCleanFilesOlderThanThisDate
 	 * @throws IOException
 	 */
-	public static void cleanDirectory(File directory, Date onlyCleanFilesOlderThanThisDate) throws IOException {
+	public static void cleanDirectory(File directory, LocalDateTime onlyCleanFilesOlderThanThisDate) throws IOException {
 		if (directory == null) {
 			throw new IllegalArgumentException(String.format("Null directory is not allowed (olderThanDate: %s)",
 					onlyCleanFilesOlderThanThisDate));
@@ -140,7 +150,7 @@ public final class FileUtils {
 
 		IOException exception = null;
 		for (File file : files) {
-			if (onlyCleanFilesOlderThanThisDate == null || onlyCleanFilesOlderThanThisDate.after(new Date(file.lastModified()))) {
+			if (onlyCleanFilesOlderThanThisDate == null || onlyCleanFilesOlderThanThisDate.isAfter(Dates.toLocalDateTime(file.lastModified()))) {
 				try {
 					org.apache.commons.io.FileUtils.forceDelete(file);
 				} catch (IOException ioe) {
