@@ -137,7 +137,7 @@
 		<igloo.galimatias.version>0.2.1</igloo.galimatias.version>
 		
 		<igloo.jersey.version>1.19.4</igloo.jersey.version>
-		<igloo.jersey2.version>2.25.1</igloo.jersey2.version>
+		<igloo.jersey2.version>2.27</igloo.jersey2.version>
 		<igloo.glassfish-asm-all-repackaged.version>2.5.0-b05</igloo.glassfish-asm-all-repackaged.version>
 		
 		<igloo.jstl.version>1.2</igloo.jstl.version>
