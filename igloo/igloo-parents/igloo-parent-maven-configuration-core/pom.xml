@@ -1129,27 +1129,6 @@
 					<artifactId>jersey-media-multipart</artifactId>
 					<version>${igloo.jersey2.version}</version>
 				</dependency>
-				
-				<dependency>
-					<groupId>org.glassfish.jersey.ext</groupId>
-					<artifactId>jersey-spring3</artifactId>
-					<version>${igloo.jersey2.version}</version>
-					<exclusions>
-						<exclusion>
-							<!-- from version >= 2.5.0-b06, asm-all is packaged with
-							     a module-info.class that cannot be handled by
-							     animal-sniffer ; switch to 2.5.0-b05 (same lib,
-							     different packaging)-->
-							<groupId>org.glassfish.hk2.external</groupId>
-							<artifactId>asm-all-repackaged</artifactId>
-						</exclusion>
-					</exclusions>
-				</dependency>
-				<dependency>
-					<groupId>org.glassfish.hk2.external</groupId>
-					<artifactId>asm-all-repackaged</artifactId>
-					<version>${igloo.glassfish-asm-all-repackaged.version}</version>
-				</dependency>
 			
 			<!-- Servlet / JSP -->
 			
@@ -1261,30 +1240,6 @@
 							<artifactId>commons-logging</artifactId>
 						</exclusion>
 					</exclusions>
-				</dependency>
-				
-				<dependency>
-					<groupId>com.sun.grizzly</groupId>
-					<artifactId>grizzly-webserver</artifactId>
-					<version>${igloo.grizzly.version}</version>
-					<exclusions>
-						<exclusion>
-							<groupId>javax.servlet</groupId>
-							<artifactId>servlet-api</artifactId>
-						</exclusion>
-					</exclusions>
-				</dependency>
-				
-				<dependency>
-					<groupId>com.sun.jersey</groupId>
-					<artifactId>jersey-grizzly</artifactId>
-					<version>${igloo.jersey.version}</version>
-				</dependency>
-				
-				<dependency>
-					<groupId>org.glassfish.jersey.test-framework.providers</groupId>
-					<artifactId>jersey-test-framework-provider-grizzly2</artifactId>
-					<version>${igloo.jersey2.version}</version>
 				</dependency>
 				
 				<dependency>
