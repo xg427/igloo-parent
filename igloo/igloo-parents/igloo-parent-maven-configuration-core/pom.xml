@@ -1129,6 +1129,24 @@
 					<artifactId>jersey-media-multipart</artifactId>
 					<version>${igloo.jersey2.version}</version>
 				</dependency>
+				
+				<dependency>
+					<groupId>org.glassfish.jersey.ext</groupId>
+					<artifactId>jersey-spring4</artifactId>
+					<version>${igloo.jersey2.version}</version>
+					<exclusions>
+						<!--
+						Exclude hk2 configuration layer as we do not
+						use hk2 as our principal DI, and that dependency
+						relies upon dependencies we do not want to
+						trigger conflict on (like hibernate-validator).
+						-->
+						<exclusion>
+							<groupId>org.glassfish.hk2</groupId>
+							<artifactId>hk2-config</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
 			
 			<!-- Servlet / JSP -->
 			
