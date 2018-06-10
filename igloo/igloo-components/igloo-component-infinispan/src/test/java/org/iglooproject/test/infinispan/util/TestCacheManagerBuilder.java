@@ -4,6 +4,8 @@ import java.lang.management.ManagementFactory;
 import java.lang.reflect.Constructor;
 import java.time.Duration;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.apache.commons.configuration2.FileBasedConfiguration;
 import org.apache.commons.configuration2.PropertiesConfiguration;
@@ -66,18 +68,19 @@ public class TestCacheManagerBuilder {
 				properties.put(key, configuration.getString(key));
 			}
 			
-			return buildFromConfiguration(properties);
+			return buildAndRunFromConfiguration(properties);
 		} catch (ConfigurationException e) {
 			throw new RuntimeException("Configuration loading failed", e);
 		}
 	}
 	
-	public EmbeddedCacheManager buildFromConfiguration(Properties properties) {
+	public EmbeddedCacheManager buildAndRunFromConfiguration(Properties properties) {
 		GlobalConfiguration globalConfiguration =
 				new GlobalDefaultReplicatedTransientConfigurationBuilder(properties)
 					.cacheManagerName(cacheName).nodeName(name).build();
 		Configuration configuration =
 				new DefaultReplicatedTransientConfigurationBuilder().build();
+		@SuppressWarnings("resource")
 		EmbeddedCacheManager cacheManager = new DefaultCacheManager(globalConfiguration, configuration, false);
 		cacheManager.getCache(TestConstants.CACHE_DEFAULT);
 		
@@ -85,18 +88,27 @@ public class TestCacheManagerBuilder {
 			LOGGER.debug("Task: wait for view size = {}", expectedViewSize);
 			Duration timeout = Duration.ofSeconds(30);
 			Stopwatch watch = Stopwatch.createStarted();
-			boolean viewSizeOk = false;
-			while (watch.elapsed().compareTo(timeout) < 0) {
-				if (cacheManager.getMembers().size() >= expectedViewSize
-						&& HealthStatus.HEALTHY.equals(cacheManager.getHealth().getClusterHealth().getHealthStatus())) {
-					viewSizeOk = true;
-					break;
+			try {
+				while (true) {
+					if (cacheManager.getMembers().size() >= expectedViewSize
+							&& HealthStatus.HEALTHY.equals(cacheManager.getHealth().getClusterHealth().getHealthStatus())) {
+						break;
+					}
+					Thread.sleep(TimeUnit.SECONDS.toMillis(2));
+					if (watch.elapsed().compareTo(timeout) > 0) {
+						throw new TimeoutException();
+					}
 				}
-			}
-			if (!viewSizeOk) {
+			} catch (TimeoutException e) {
 				LOGGER.error("Expected view size {} not reached before {} ms. timeout ; current view size {}",
 						expectedViewSize, timeout.toMillis(), cacheManager.getMembers().size());
 				throw new IllegalStateException("Expected view size not reached");
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+				String message = String.format(
+						"Expected view size %s not reached before interruption ; current view size %d",
+						expectedViewSize, cacheManager.getMembers().size());
+				throw new IllegalStateException(message, e);
 			}
 			LOGGER.debug("Task: expected view size reached in {} ms.", watch.elapsed().toMillis());
 		}
