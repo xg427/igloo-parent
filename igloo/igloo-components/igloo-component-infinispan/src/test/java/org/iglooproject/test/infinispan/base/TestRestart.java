@@ -49,52 +49,53 @@ public class TestRestart extends TestBase {
 				}
 			}
 		});
+		Callable<Boolean> testAllNodes = waitForNNodes(4, cacheManager);
 		
 		// SimpleMessagingTask: on connect, each node send a message
 		prepareCluster(nodeNumber, SimpleMessagingTask.class);
 		
 		// wait for n (n=nodeNumber) messages
-		Callable<Boolean> testOne = new Callable<Boolean>() {
-			@Override
-			public Boolean call() throws Exception {
-				return messages.keySet().size() == nodeNumber;
-			}
-		};
+		Callable<Boolean> testAllMessages = waitForMessages(nodeNumber, messages);
 		// wait for messages from other nodes
-		waitForEvent(monitor, testOne, 20, TimeUnit.SECONDS);
+		waitForEvent(monitor, testAllNodes, 20, TimeUnit.SECONDS);
+		waitForEvent(monitor, testAllMessages, 20, TimeUnit.SECONDS);
 		
 		// shutdown all nodes
 		shutdownProcesses(false);
 		
 		// wait alone state (1 node)
-		Callable<Boolean> aloneTest = new Callable<Boolean>() {
-			@Override
-			public Boolean call() throws Exception {
-				return cacheManager.getMembers().size() == 1;
-			}
-		};
-		waitForEvent(monitor, aloneTest, 20, TimeUnit.SECONDS);
+		Callable<Boolean> testAlone = waitForNNodes(1, cacheManager);
+		waitForEvent(monitor, testAlone, 20, TimeUnit.SECONDS);
 		
 		// start new nodes
 		prepareCluster(nodeNumber, SimpleMessagingTask.class);
 		
 		// wait joining nodes
-		Callable<Boolean> allTest = new Callable<Boolean>() {
-			@Override
-			public Boolean call() throws Exception {
-				return cacheManager.getMembers().size() == 4;
-			}
-		};
-		waitForEvent(monitor, allTest, 20, TimeUnit.SECONDS);
+		waitForEvent(monitor, testAllNodes, 20, TimeUnit.SECONDS);
 		
 		// wait 6 messages (as new nodes use new addresses, new messages are added)
-		Callable<Boolean> testTwo = new Callable<Boolean>() {
+		Callable<Boolean> testTwo = waitForMessages(6, messages);
+		waitForEvent(monitor, testTwo, 20, TimeUnit.SECONDS);
+	}
+
+	private Callable<Boolean> waitForMessages(final int numberOfMessagesToWait, final Map<Address, String> messages) {
+		Callable<Boolean> testOne = new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
-				return messages.keySet().size() == 6;
+				return messages.keySet().size() == numberOfMessagesToWait;
 			}
 		};
-		waitForEvent(monitor, testTwo, 20, TimeUnit.SECONDS);
+		return testOne;
+	}
+
+	private Callable<Boolean> waitForNNodes(final int numberOfNodes, final EmbeddedCacheManager cacheManager) {
+		Callable<Boolean> test = new Callable<Boolean>() {
+			@Override
+			public Boolean call() throws Exception {
+				return cacheManager.getMembers().size() == numberOfNodes;
+			}
+		};
+		return test;
 	}
 
 }
