@@ -15,6 +15,7 @@ import org.iglooproject.infinispan.utils.GlobalDefaultReplicatedTransientConfigu
 import org.iglooproject.test.infinispan.util.tasks.SimpleMessagingTask;
 import org.infinispan.configuration.cache.Configuration;
 import org.infinispan.configuration.global.GlobalConfiguration;
+import org.infinispan.health.HealthStatus;
 import org.infinispan.manager.DefaultCacheManager;
 import org.infinispan.manager.EmbeddedCacheManager;
 import org.slf4j.Logger;
@@ -86,7 +87,8 @@ public class TestCacheManagerBuilder {
 			Stopwatch watch = Stopwatch.createStarted();
 			boolean viewSizeOk = false;
 			while (watch.elapsed().compareTo(timeout) < 0) {
-				if (cacheManager.getMembers().size() >= expectedViewSize) {
+				if (cacheManager.getMembers().size() >= expectedViewSize
+						&& HealthStatus.HEALTHY.equals(cacheManager.getHealth().getClusterHealth().getHealthStatus())) {
 					viewSizeOk = true;
 					break;
 				}
