@@ -21,8 +21,8 @@ for POM in $( find -name pom.xml ); do
 done
 
 MAVEN_OPTS="$MAVEN_OPTS -Dallure.enabled=true -Djacoco.enabled=true -Dallure.install.directory=$( pwd )/.allure"
-echo mvn -fae integration-test site:site
-mvn -fae integration-test site:site
+echo mvn -fae -D'infinispan/**/*.java' integration-test site:site
+mvn -fae -Dtest='infinispan/**/*.java' integration-test site:site
 TEST_RESULT=$?
 
 # interrupt on error
