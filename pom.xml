@@ -20,7 +20,7 @@
 		<!-- version needed here as we use allure to aggregate child reports -->
 		<igloo.allure-maven.version>2.9</igloo.allure-maven.version>
 		<igloo.allure.version>2.6.0</igloo.allure.version>
-		<igloo.owasp-maven-plugin.version>3.2.1</igloo.owasp-maven-plugin.version>
+		<igloo.owasp-maven-plugin.version>3.3.1</igloo.owasp-maven-plugin.version>
 	</properties>
 	
 	<profiles>
