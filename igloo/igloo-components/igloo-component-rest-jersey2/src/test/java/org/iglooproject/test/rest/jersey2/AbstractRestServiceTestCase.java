@@ -19,7 +19,7 @@ import org.springframework.test.context.TestExecutionListeners;
 public abstract class AbstractRestServiceTestCase extends AbstractTestCase {
 	
 	@Autowired
-	private IPersonService personService;
+	protected IPersonService personService;
 	
 	@Autowired
 	private MockServlet serverResource;

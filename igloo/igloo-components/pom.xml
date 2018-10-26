@@ -56,9 +56,11 @@
 		
 		<module>igloo-component-web-security</module>
 		<module>igloo-component-rest-jersey2</module>
+		<module>igloo-component-rest-client</module>
 		<module>igloo-component-jpa-migration</module>
 		<module>igloo-component-infinispan</module>
 		<module>igloo-component-elasticsearch-plugin</module>
+		<module>Rest Client</module>
 	</modules>
 
 </project>

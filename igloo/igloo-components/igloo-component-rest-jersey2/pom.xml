@@ -13,22 +13,8 @@
 	<name>Igloo - Component - Rest with Jersey 2</name>
 	
 	<dependencies>
-		
-		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-jpa</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.iglooproject.dependencies</groupId>
-			<artifactId>igloo-dependency-core-spring</artifactId>
-			<version>${project.version}</version>
-			<type>pom</type>
-		</dependency>
-		
+	
 		<!-- Rest/Jersey -->
-		
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-server</artifactId>
@@ -96,6 +82,13 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-jpa-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-rest-client</artifactId>
+			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 		

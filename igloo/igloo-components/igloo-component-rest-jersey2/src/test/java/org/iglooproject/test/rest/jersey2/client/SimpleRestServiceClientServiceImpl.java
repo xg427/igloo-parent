@@ -18,7 +18,7 @@ public class SimpleRestServiceClientServiceImpl extends AbstractRestClientServic
 	}
 	
 	public Person getEntity(Long id) {
-		WebTarget target = getTarget().path("test/get/{param}/").resolveTemplate("param", id);
+		WebTarget target = getTarget().path("person/{param}/").resolveTemplate("param", id);
 		
 		return target.request().get(Person.class);
 	}
