@@ -11,6 +11,11 @@ import org.iglooproject.commons.util.mime.MediaType;
 
 import com.google.common.collect.Maps;
 
+/**
+ * Builder class for generating a HTTP headers map.
+ * 
+ * @author jgonzalez
+ */
 public final class HttpHeaderBuilder {
 
 	private final Map<String, String> headers = Maps.newHashMap();
@@ -20,7 +25,7 @@ public final class HttpHeaderBuilder {
 	}
 
 	/**
-	 * Cannot be directly instantiated, used {@link HttpHeaderBuilder#start()} instead.
+	 * Not meant to be directly instantiated. Used {@link HttpHeaderBuilder#start()} instead.
 	 */
 	private HttpHeaderBuilder() {
 	}
@@ -34,12 +39,17 @@ public final class HttpHeaderBuilder {
 		return this;
 	}
 
+	public HttpHeaderBuilder connDirectiveKeepAlive() {
+		headers.put(HTTP.CONN_DIRECTIVE, HTTP.CONN_KEEP_ALIVE);
+		return this;
+	}
+
 	public HttpHeaderBuilder contentTypeJson() {
 		return this.contentType(MediaType.APPLICATION_JSON.mime());
 	}
 
 	public HttpHeaderBuilder contentTypeMultipartFormData() {
-		// TODO JGO : find/add the right constant
+		// FIXME : find/add the right constant
 		return this.contentType("multipart/form-data");
 	}
 

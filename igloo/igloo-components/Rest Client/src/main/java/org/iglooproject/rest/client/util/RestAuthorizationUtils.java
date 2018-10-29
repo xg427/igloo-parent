@@ -10,7 +10,8 @@ public final class RestAuthorizationUtils {
 	 */
 	public static String extractToken(String authorizationHeader) {
 		if (!authorizationHeader.startsWith(BEARER)) {
-			throw new IllegalArgumentException("Le header d'autorisation n'a pas le format attendu : 'Authorization: Bearer [token]'");
+			throw new IllegalArgumentException("Unexpected 'Authorization' header format. Expected format : "
+				+ "'Authorization: Bearer [token]'");
 		}
 		return authorizationHeader.substring(BEARER.length(), authorizationHeader.length()).trim();
 	}
