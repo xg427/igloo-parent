@@ -60,7 +60,6 @@
 		<module>igloo-component-jpa-migration</module>
 		<module>igloo-component-infinispan</module>
 		<module>igloo-component-elasticsearch-plugin</module>
-		<module>Rest Client</module>
 	</modules>
 
 </project>
