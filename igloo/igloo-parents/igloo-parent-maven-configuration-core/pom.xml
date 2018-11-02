@@ -1495,7 +1495,7 @@
 		<repository>
 			<id>nexus-igloo-releases</id>
 			<name>Nexus Igloo Releases</name>
-			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-releases/</url>
+			<url>https://nexus.tools.kobalt.fr/repository/igloo-releases/</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
@@ -1504,7 +1504,7 @@
 		<repository>
 			<id>nexus-igloo-snapshots</id>
 			<name>Nexus Igloo Snapshots</name>
-			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-snapshots/</url>
+			<url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
@@ -1518,7 +1518,7 @@
 		<pluginRepository>
 			<id>nexus-igloo-releases</id>
 			<name>Nexus Igloo Releases</name>
-			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-releases/</url>
+			<url>https://nexus.tools.kobalt.fr/repository/igloo-releases/</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
@@ -1527,7 +1527,7 @@
 		<pluginRepository>
 			<id>nexus-igloo-snapshots</id>
 			<name>Nexus Igloo Snapshots</name>
-			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-snapshots/</url>
+			<url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
