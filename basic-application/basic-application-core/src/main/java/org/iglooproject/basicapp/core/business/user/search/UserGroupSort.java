@@ -11,7 +11,9 @@ import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.jpa.more.business.sort.SortUtils;
 
+// TODO: switch to final List<SortField> attribute ?
 public enum UserGroupSort implements ISort<SortField> {
+	@SuppressWarnings("common-java:DuplicatedBlocks")
 	NAME {
 		@Override
 		public List<SortField> getSortFields(SortOrder sortOrder) {
@@ -25,6 +27,7 @@ public enum UserGroupSort implements ISort<SortField> {
 			return SortOrder.ASC;
 		}
 	},
+	@SuppressWarnings("common-java:DuplicatedBlocks")
 	ID {
 		@Override
 		public List<SortField> getSortFields(SortOrder sortOrder) {
