@@ -26,7 +26,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.hibernate.metamodel.internal.EmbeddableTypeImpl;
+import org.hibernate.metamodel.model.domain.internal.EmbeddableTypeImpl;
 import org.iglooproject.config.bootstrap.spring.ExtendedTestApplicationContextInitializer;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.service.IGenericEntityService;
